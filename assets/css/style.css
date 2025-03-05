@@ -1,8 +1,12 @@
 * {
   text-decoration: none;
-  box-sizing: border-box;
   color: #f8f2e7;
+  box-sizing: border-box;
   font-family: Montserrat;
+}
+a {
+  text-decoration: none;
+  color: #f8f2e7;
 }
 li {
   list-style: none;
@@ -36,16 +40,18 @@ body {
 .HeroText {
   position: absolute;
   bottom: 10%;
-  left: 30%;
+  left: 10%;
+  width: 50%;
   font-size: 7rem;
-  letter-spacing: 0.4rem;
+  letter-spacing: 0.3rem;
   color: white;
   font-weight: bold;
 }
 .LinksAdj {
   padding-left: 2rem;
+  justify-content: space-between;
 }
-.LinksAdj ul,
+.LinksAdj .navbar-nav,
 li {
   display: flex;
   justify-content: space-between;
@@ -53,4 +59,130 @@ li {
   gap: 1rem;
 
   font-size: 16px;
+}
+.dropdown .nav-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.dropdown-menu[data-bs-popper] {
+  left: -70px !important;
+}
+.SecondSectionPar {
+  background-color: #eef5fa;
+  padding: 5rem 2rem;
+  position: relative;
+}
+
+.SecondSecDet {
+  /* width: 90%; */
+  border-radius: 40px;
+  background-color: white;
+  box-shadow: 0px 14px 28px 18px #1c1c1c0a;
+  margin: auto;
+  padding: 4rem 2rem;
+  position: relative;
+  .popImage {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: fit-content;
+    img {
+      width: 18vw;
+    }
+  }
+  .devCompany {
+    background-color: #fcf3f5;
+    padding: 0.5rem;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  h4,
+  h3,
+  h2,
+  span {
+    color: black;
+    font-size: 18px;
+    line-height: 38.03px;
+    font-weight: 400;
+  }
+  span {
+    font-size: 19px;
+    font-weight: 700;
+    color: #503037;
+  }
+  h3 {
+    line-height: 46.77px;
+  }
+  h2 {
+    font-weight: 700;
+    line-height: 46.77px;
+    font-size: 34px;
+  }
+}
+.VisMisSectionCont {
+  padding: 5rem 2rem;
+  margin: auto;
+}
+
+.vismisimgSect {
+  background-color: #eef5fa;
+  min-width: fit-content;
+}
+.VisMisSectionMain {
+  h2,
+  p {
+    color: black;
+  }
+  h2 {
+    font-weight: 700;
+  }
+}
+.StragtObj {
+  background-color: #f3f8ee;
+  padding: 5rem 2rem;
+  position: relative;
+}
+.StragObjCont {
+  margin: auto;
+  background-color: white;
+  padding: 4rem 2rem;
+  gap: 2rem;
+  border-radius: 40px;
+  h2 {
+    text-align: center;
+    font-weight: 700;
+    line-height: 48px;
+    size: 40px;
+    color: black;
+  }
+  h3 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #0a0a09;
+  }
+}
+.straObjBoxParent {
+  justify-content: space-between;
+  margin: auto;
+  .straObjBox {
+    border: 2px solid #dae8c9;
+    border-radius: 16px;
+    min-height: 270px;
+    width: calc(100% / 4.5);
+    justify-content: space-between;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 2rem;
+  }
 }
