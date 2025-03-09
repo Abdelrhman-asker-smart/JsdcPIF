@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+          /* Skeleton loader style */
+    .skeleton {
+      background-color: #eee;
+      border-radius: 4px;
+      color: transparent;
+      pointer-events: none;
+      animation: skeleton-loading 1s linear infinite alternate;
+    }
+
+    @keyframes skeleton-loading {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.5;
+      }
+    }
       .custom-alert {
         position: fixed;
         top: 0;
@@ -203,7 +221,7 @@
               type="text"
               id="fullName"
               placeholder=" "
-              class="floating-input peer"
+              class="floating-input peer skeleton "
             />
             <label for="fullName" class="floating-label">Full Name</label>
             <div class="error-message" id="fullNameError">
@@ -216,7 +234,7 @@
               type="text"
               id="lastName"
               placeholder=" "
-              class="floating-input peer"
+              class="floating-input peer skeleton"
             />
             <label for="lastName" class="floating-label">Last Name</label>
             <div class="error-message" id="lastNameError">
@@ -229,7 +247,7 @@
               type="email"
               id="email"
               placeholder=" "
-              class="floating-input peer"
+              class="floating-input peer skeleton"
             />
             <label for="email" class="floating-label">Email</label>
             <div class="error-message" id="emailError">
@@ -242,7 +260,7 @@
               type="url"
               id="website"
               placeholder=" "
-              class="floating-input peer"
+              class="floating-input peer skeleton"
             />
             <label for="website" class="floating-label">Website</label>
             <div class="error-message" id="websiteError">
@@ -255,7 +273,7 @@
               type="text"
               id="address"
               placeholder=" "
-              class="floating-input peer"
+              class="floating-input peer skeleton"
             />
             <label for="address" class="floating-label">Address</label>
             <div class="error-message" id="addressError">
@@ -266,7 +284,7 @@
           <div class="relative">
             <select
               id="customerType"
-              class="block w-full appearance-none rounded-[12px] floating-input text-base text-black font-normal border border-[#CAE0F0] focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              class="block w-full appearance-none rounded-[12px] floating-input text-base text-black font-normal border border-[#CAE0F0] focus:outline-none focus:ring-0 focus:border-blue-600 peer skeleton"
             >
               <option value="" selected disabled hidden></option>
               <option value="regular">Regular</option>
@@ -292,7 +310,7 @@
               >Customer Type</label
             >
 
-            <div class="error-message" id="customerTypeError">
+            <div class="error-message" id="customerTypeer skeletonror">
               This field is required.
             </div>
           </div>
@@ -307,7 +325,7 @@
               type="tel"
               id="phone0"
               placeholder=" "
-              class="phone floating-input peer"
+              class="phone floating-input peer skeleton"
             />
             <label for="phone" class="floating-label">Phone Number</label>
             <div class="error-message phone-error">This field is required.</div>
@@ -404,7 +422,7 @@
           <textarea
             id="notes"
             placeholder=" "
-            class="block rounded-lg px-2.5 pb-2 pt-5 floating-input w-full text-base text-black font-normal border border-[#CAE0F0] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer h-[132px]"
+            class="block rounded-lg px-2.5 pb-2 pt-5 floating-input w-full text-base text-black font-normal border border-[#CAE0F0] appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer skeleton h-[132px]"
           ></textarea>
           <label for="notes" class="floating-label">Notes</label>
           <div class="error-message" id="notesError">
@@ -459,6 +477,28 @@
     </div>
 
     <script>
+         // Add skeleton class to all fields untill loading
+    function addSkeletonToFields() {
+      document
+        .querySelectorAll(
+          "#customerForm input, #customerForm textarea, #customerForm select"
+        )
+        .forEach((field) => {
+          field.classList.add("skeleton");
+        });
+    }
+    // Remove skeleton class when data is loaded
+    function removeSkeletonFromFields() {
+      document
+        .querySelectorAll(
+          "#customerForm input, #customerForm textarea, #customerForm select"
+        )
+        .forEach((field) => {
+          field.classList.remove("skeleton");
+        });
+    }
+    addSkeletonToFields();
+
       let currentFileName = "";
       let phoneCounter = 1;
       function resetFields() {
@@ -699,7 +739,7 @@
         const newInput = document.createElement("input");
         newInput.type = "tel";
         newInput.placeholder = " ";
-        newInput.className = "phone floating-input peer ";
+        newInput.className = "phone floating-input peer skeleton ";
         const newId = "phone" + phoneCounter;
         newInput.id = newId;
 
@@ -888,7 +928,56 @@
             });
           }
         });
-        
+            // Populate the form fields with fetched dummy data
+    function populateForm(data) {
+      document.getElementById("fullName").value = data.fullName;
+      document.getElementById("lastName").value = data.lastName;
+      document.getElementById("email").value = data.email;
+      document.getElementById("website").value = data.website;
+      document.getElementById("address").value = data.address;
+      document.getElementById("customerType").value = data.customerType;
+
+      currentFileName = data.fileName || "";
+      fileInputLabel.textContent = currentFileName
+        ? "Current File: " + currentFileName
+        : "Drag&Drop your file or Browse";
+
+      document.getElementById("notes").value = data.notes;
+      if (data.phoneNumbers && data.phoneNumbers.length > 0) {
+        const initialPhone = document.querySelector(".phone");
+        initialPhone.value = data.phoneNumbers[0];
+        for (let i = 1; i < data.phoneNumbers.length; i++) {
+          let newPhoneInput = addPhoneNumber();
+          newPhoneInput.value = data.phoneNumbers[i];
+        }
+      }
+
+      removeSkeletonFromFields();
+    }
+
+    
+      function fetchDummyData() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            fullName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com",
+            website: "https://example.com",
+            address: "123 Main Street",
+            customerType: "vip",
+            phoneNumbers: ["123456789", "987654321"],
+            fileName: "dummy.pdf",
+            notes: "Sample notes for update.",
+          });
+        }, 1500);
+      });
+    }
+
+  
+    fetchDummyData().then((data) => {
+      populateForm(data);
+    });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
   </body>

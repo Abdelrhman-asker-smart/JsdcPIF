@@ -459,6 +459,28 @@
     </div>
 
     <script>
+         // Add skeleton class to all fields untill loading
+    function addSkeletonToFields() {
+      document
+        .querySelectorAll(
+          "#customerForm input, #customerForm textarea, #customerForm select"
+        )
+        .forEach((field) => {
+          field.classList.add("skeleton");
+        });
+    }
+    // Remove skeleton class when data is loaded
+    function removeSkeletonFromFields() {
+      document
+        .querySelectorAll(
+          "#customerForm input, #customerForm textarea, #customerForm select"
+        )
+        .forEach((field) => {
+          field.classList.remove("skeleton");
+        });
+    }
+    addSkeletonToFields();
+
       let currentFileName = "";
       let phoneCounter = 1;
       function resetFields() {
@@ -888,7 +910,56 @@
             });
           }
         });
-        
+            // Populate the form fields with fetched dummy data
+    function populateForm(data) {
+      document.getElementById("fullName").value = data.fullName;
+      document.getElementById("lastName").value = data.lastName;
+      document.getElementById("email").value = data.email;
+      document.getElementById("website").value = data.website;
+      document.getElementById("address").value = data.address;
+      document.getElementById("customerType").value = data.customerType;
+
+      currentFileName = data.fileName || "";
+      fileInputLabel.textContent = currentFileName
+        ? "Current File: " + currentFileName
+        : "Drag&Drop your file or Browse";
+
+      document.getElementById("notes").value = data.notes;
+      if (data.phoneNumbers && data.phoneNumbers.length > 0) {
+        const initialPhone = document.querySelector(".phone");
+        initialPhone.value = data.phoneNumbers[0];
+        for (let i = 1; i < data.phoneNumbers.length; i++) {
+          let newPhoneInput = addPhoneNumber();
+          newPhoneInput.value = data.phoneNumbers[i];
+        }
+      }
+
+      removeSkeletonFromFields();
+    }
+
+    
+      function fetchDummyData() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            fullName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com",
+            website: "https://example.com",
+            address: "123 Main Street",
+            customerType: "vip",
+            phoneNumbers: ["123456789", "987654321"],
+            fileName: "dummy.pdf",
+            notes: "Sample notes for update.",
+          });
+        }, 1500);
+      });
+    }
+
+  
+    fetchDummyData().then((data) => {
+      populateForm(data);
+    });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
   </body>

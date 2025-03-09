@@ -313,9 +313,9 @@
                 class="bg-[#EEF5FA] font-[700] text-[#559BD0] px-10 border border-[#559BD0] py-2 rounded-[8px]">
                 Scan coustomer
               </button>
-              <a href="./create-customer.html" class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
+              <button class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
                 New coustomer
-              </a>
+              </button>
             </div>
           </div>
 
@@ -880,7 +880,7 @@
       popupOverlayChild.classList.add("mt-[200%]", "duration-[3s]", "transition-all");
       setTimeout(() => {
         popupOverlay.classList.add("hidden");
-        popupOverlayChild.classList.remove("mt-[200%]", "duration-[3s]", "transition-all");
+        popupOverlayChild.classList.remove("slide-down");
       }, 1500); م
       errorMsg.textContent = '';
       selectedFile = null;

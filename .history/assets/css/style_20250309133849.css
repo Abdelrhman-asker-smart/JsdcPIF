@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 * {
   text-decoration: none;
   /* color: #f8f2e7; */
@@ -576,6 +576,8 @@ li {
   transition: transform 0.3s ease;
 }
 
+
+
 .column {
   display: grid;
   gap: 5px;
@@ -599,6 +601,9 @@ li {
   grid-template-rows: 1fr 1fr;
 }
 @media (max-width: 767px) {
+  .container {
+    height: 200px;
+  }
   .Gallery {
     div {
       font-size: 18px !important;
@@ -748,6 +753,12 @@ li {
   }
 }
 
+
+
+
+
+
+
 .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -769,10 +780,10 @@ li {
     width: 1170px !important;
   }
 }
-.custome-container {
+.custome-container{
   max-width: 72rem;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: 10px; 
   width: 100vw;
   margin: auto;
 }
