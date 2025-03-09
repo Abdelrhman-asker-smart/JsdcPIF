@@ -650,9 +650,6 @@ li {
   grid-template-rows: 1fr 1fr;
 }
 @media (max-width: 767px) {
-  .container {
-    height: 200px;
-  }
   .Gallery {
     div {
       font-size: 18px !important;
