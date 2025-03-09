@@ -576,7 +576,12 @@ li {
   transition: transform 0.3s ease;
 }
 
-
+/* .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  height: 500px;
+} */
 
 .column {
   display: grid;
