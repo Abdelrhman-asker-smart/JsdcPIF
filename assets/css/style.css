@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+.homeBody * {
+  color: #f8f2e7;
+}
 * {
   text-decoration: none;
   /* color: #f8f2e7; */
@@ -19,7 +22,46 @@ body {
   padding: 0;
   position: relative;
 }
-
+.LoginBody {
+  background-color: #eef5fa;
+  min-height: 100vh;
+}
+.picLogin {
+  max-width: 191px;
+}
+.LoginLogo {
+  max-width: 265px;
+}
+.ContentMain {
+  margin-top: 5rem;
+  input {
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid #cae0f0;
+    padding: 0 0.5rem;
+    color: black;
+  }
+  .submitBtn {
+    color: white;
+    background-color: #559bd0;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .MicroLogin {
+    background-color: #eef5fa;
+    border: 1px solid #559bd0;
+    border-radius: 8px !important;
+    padding: 8px;
+    font-size: 16px;
+  }
+}
+.LoginBody input::placeholder {
+  opacity: 0.7;
+}
 .NavBarMain {
   position: absolute;
   top: 0;
@@ -73,9 +115,18 @@ li {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  color: black;
 }
 .dropdown-menu[data-bs-popper] {
   left: -70px !important;
+}
+.dropdown-item {
+  color: black;
+}
+@media screen and (max-width: 767px) {
+  .dropdown-menu[data-bs-popper] {
+    left: -00px !important;
+  }
 }
 .SecondSectionPar {
   background-color: #eef5fa;
@@ -576,13 +627,6 @@ li {
   transition: transform 0.3s ease;
 }
 
-.container {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  height: 500px;
-}
-
 .column {
   display: grid;
   gap: 5px;
@@ -758,12 +802,6 @@ li {
   }
 }
 
-
-
-
-
-
-
 .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -785,10 +823,10 @@ li {
     width: 1170px !important;
   }
 }
-.custome-container{
+.custome-container {
   max-width: 72rem;
   padding-left: 10px;
-  padding-right: 10px; 
+  padding-right: 10px;
   width: 100vw;
   margin: auto;
 }

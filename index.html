@@ -17,7 +17,20 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Home</title>
   </head>
-  <body>
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      height: 500px;
+    }
+    @media (max-width: 767px) {
+      .container {
+        height: 200px;
+      }
+    }
+  </style>
+  <body class="homeBody">
     <div class="HeroHeader">
       <span class="HeroText wow animate__animated animate__fadeInDown"
         >Nurtured by Nature.</span
@@ -527,7 +540,6 @@
                 alt="img1"
                 srcset=""
               />
-              
             </div>
           </div>
           <!-- Column 2 -->
