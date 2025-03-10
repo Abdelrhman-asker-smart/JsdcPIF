@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Activity Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <!-- Main Container -->
+  <div class="container mx-auto p-4">
+    <h3 class="text-2xl font-semibold text-black mb-6">Activities</h3>
+    <!-- Button to open popup for new activity -->
+    <button id="btnNewActivity" class="bg-blue-100 text-blue-600 px-4 py-2 rounded mb-4">
+      New Activity
+    </button>
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white rounded shadow">
+      <table id="activity-table" class="min-w-full">
+        <thead class="bg-blue-100">
+          <tr>
+            <th class="p-2 text-center">
+              <input type="checkbox" id="activity-select-all">
+            </th>
+            <th class="p-2 text-left cursor-pointer sortable" data-column="email">Email</th>
+            <th class="p-2 text-left cursor-pointer sortable" data-column="notes">Notes</th>
+            <th class="p-2 text-left cursor-pointer sortable" data-column="date">Date</th>
+            <th class="p-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody id="activity-table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="flex items-center justify-end mt-4 space-x-4">
+      <button id="activity-prevPage" class="px-3 py-1 bg-gray-200 text-gray-600 rounded" disabled>Prev</button>
+      <span id="activity-pageIndicator" class="text-gray-700"></span>
+      <button id="activity-nextPage" class="px-3 py-1 bg-blue-500 text-white rounded">Next</button>
+    </div>
+
+    <!-- Bottom Navigation (Per Page & Results) -->
+    <div class="flex justify-between items-center mb-[50px] mt-4">
+      <div class="flex items-center gap-6 justify-center flex-grow flex-wrap">
+        <p id="activity-resultsText"
+          class="flex-grow max-w-[194px] w-full text-center bg-white text-[#4E4E4E] font-bold rounded-[12px] h-[60px] flex items-center justify-center"
+          style="box-shadow: 0px 12px 20px 0px #00000014">
+          showing 0 results
+        </p>
+        <div class="flex-grow max-w-[194px] w-full text-center relative">
+          <button id="activity-perPageButton"
+            class="bg-white text-[#4E4E4E] rounded-[12px] h-[60px] w-full flex items-center justify-center"
+            style="box-shadow: 0px 12px 20px 0px #00000014">
+            per page
+            <strong id="activity-perPageValue" class="text-[#050504] mx-2">10</strong>
+          </button>
+          <div id="activity-perPageDropdown"
+            class="hidden absolute mt-3 left-0 top-full w-full bg-white border rounded-[12px] shadow-md z-10">
+            <div class="option py-2 cursor-pointer text-black" data-value="10">10</div>
+            <div class="option py-2 cursor-pointer text-black" data-value="5">5</div>
+            <div class="option py-2 cursor-pointer text-black" data-value="20">20</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Overlay -->
+  <div id="popupOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded max-w-md w-full relative">
+      <!-- Close Button -->
+      <button id="popupCloseBtn" class="absolute top-2 right-2 text-gray-600 text-2xl">&times;</button>
+      <h3 class="text-xl font-bold mb-4">Activity Details</h3>
+      <form id="activityForm">
+        <div class="mb-4">
+          <label for="activityEmail" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="activityEmail" name="email" required
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2">
+        </div>
+        <div class="mb-4">
+          <label for="activityNotes" class="block text-sm font-medium text-gray-700">Notes</label>
+          <textarea id="activityNotes" name="notes" required
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="activityDate" class="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date" id="activityDate" name="date" required
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2">
+        </div>
+        <p id="errorMsg" class="text-sm text-red-500 mb-2"></p>
+        <div class="flex gap-4">
+          <button type="submit" id="btnSaveChanges" class="bg-blue-500 text-white px-4 py-2 rounded">
+            Save Changes
+          </button>
+          <button type="button" id="btnCancelPopup" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Code -->
+  <script>
+    // Sample activities data
+    let activities = [
+      { id: 1, email: "oli@example.com", notes: "Important client", date: "2025-03-10" },
+      { id: 2, email: "mary@example.com", notes: "Follow up", date: "2025-03-12" },
+      // You can add more sample activities here for testing pagination and sorting.
+    ];
+
+    // Global variables for editing and pagination
+    let currentEditId = null;
+    let rowsPerPage = 10;
+    let currentPage = 0;
+    const sortState = { email: 1, notes: 1, date: 1 };
+
+    // Element references
+    const btnNewActivity = document.getElementById("btnNewActivity");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popupCloseBtn = document.getElementById("popupCloseBtn");
+    const btnCancelPopup = document.getElementById("btnCancelPopup");
+    const activityForm = document.getElementById("activityForm");
+    const errorMsg = document.getElementById("errorMsg");
+    const resultsText = document.getElementById("activity-resultsText");
+    const tableBody = document.getElementById("activity-table-body");
+    const selectAll = document.getElementById("activity-select-all");
+    const prevButton = document.getElementById("activity-prevPage");
+    const nextButton = document.getElementById("activity-nextPage");
+    const pageIndicator = document.getElementById("activity-pageIndicator");
+    const perPageButton = document.getElementById("activity-perPageButton");
+    const perPageValue = document.getElementById("activity-perPageValue");
+    const perPageDropdown = document.getElementById("activity-perPageDropdown");
+
+    // Function to update the results text based on pagination
+    function updateResultsText() {
+      const totalResults = activities.length;
+      const start = currentPage * rowsPerPage + 1;
+      const end = Math.min((currentPage + 1) * rowsPerPage, totalResults);
+      resultsText.textContent = `showing ${start} to ${end} of ${totalResults} results`;
+    }
+
+    // --- Popup functions ---
+
+    // Open popup for creating a new activity
+    btnNewActivity.addEventListener("click", () => {
+      currentEditId = null;
+      activityForm.reset();
+      errorMsg.textContent = "";
+      popupOverlay.classList.remove("hidden");
+    });
+
+    // Close popup function
+    function closePopup() {
+      popupOverlay.classList.add("hidden");
+    }
+    popupCloseBtn.addEventListener("click", closePopup);
+    btnCancelPopup.addEventListener("click", closePopup);
+
+    // Handle form submission (for both new and edit)
+    activityForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("activityEmail").value.trim();
+      const notes = document.getElementById("activityNotes").value.trim();
+      const date = document.getElementById("activityDate").value;
+
+      // Basic validation: check all fields and email format
+      if (!email || !notes || !date) {
+        errorMsg.textContent = "All fields are required.";
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errorMsg.textContent = "Please enter a valid email.";
+        return;
+      }
+
+      if (currentEditId) {
+        // Update an existing activity
+        const activity = activities.find(act => act.id === currentEditId);
+        if (activity) {
+          activity.email = email;
+          activity.notes = notes;
+          activity.date = date;
+        }
+      } else {
+        // Add a new activity with a unique id
+        const newId = activities.length ? Math.max(...activities.map(a => a.id)) + 1 : 1;
+        activities.push({ id: newId, email, notes, date });
+      }
+      closePopup();
+      renderTable();
+    });
+
+    // --- Table rendering and pagination ---
+
+    function renderTable() {
+      tableBody.innerHTML = "";
+      const startIndex = currentPage * rowsPerPage;
+      const pageData = activities.slice(startIndex, startIndex + rowsPerPage);
+      
+      pageData.forEach(activity => {
+        const row = document.createElement("tr");
+        row.className = "border-b hover:bg-gray-50";
+
+        // Checkbox cell
+        const checkboxCell = document.createElement("td");
+        checkboxCell.className = "p-2 text-center";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkboxCell.appendChild(checkbox);
+        row.appendChild(checkboxCell);
+
+        // Email cell
+        const emailCell = document.createElement("td");
+        emailCell.className = "p-2";
+        emailCell.textContent = activity.email;
+        row.appendChild(emailCell);
+
+        // Notes cell
+        const notesCell = document.createElement("td");
+        notesCell.className = "p-2";
+        notesCell.textContent = activity.notes;
+        row.appendChild(notesCell);
+
+        // Date cell
+        const dateCell = document.createElement("td");
+        dateCell.className = "p-2";
+        dateCell.textContent = activity.date;
+        row.appendChild(dateCell);
+
+        // Action cell with Edit button
+        const actionCell = document.createElement("td");
+        actionCell.className = "p-2 text-center";
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.className = "text-blue-600 underline";
+        editBtn.addEventListener("click", () => openPopupForEdit(activity));
+        actionCell.appendChild(editBtn);
+        row.appendChild(actionCell);
+
+        tableBody.appendChild(row);
+      });
+      updatePagination();
+    }
+
+    function updatePagination() {
+      const totalPages = Math.ceil(activities.length / rowsPerPage);
+      pageIndicator.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+      prevButton.disabled = currentPage === 0;
+      nextButton.disabled = currentPage >= totalPages - 1;
+      updateResultsText();
+    }
+
+    prevButton.addEventListener("click", () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderTable();
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      if ((currentPage + 1) * rowsPerPage < activities.length) {
+        currentPage++;
+        renderTable();
+      }
+    });
+
+    // --- Sorting ---
+    document.querySelectorAll("th.sortable").forEach(th => {
+      th.addEventListener("click", function() {
+        const column = this.getAttribute("data-column");
+        sortState[column] = -sortState[column]; // toggle sort direction
+        activities.sort((a, b) => {
+          if (a[column] < b[column]) return -1 * sortState[column];
+          if (a[column] > b[column]) return 1 * sortState[column];
+          return 0;
+        });
+        renderTable();
+      });
+    });
+
+    // "Select All" checkbox functionality
+    selectAll.addEventListener("change", function() {
+      const checkboxes = tableBody.querySelectorAll("input[type='checkbox']");
+      checkboxes.forEach(cb => cb.checked = selectAll.checked);
+    });
+
+    // --- Edit Popup ---
+    function openPopupForEdit(activity) {
+      currentEditId = activity.id;
+      document.getElementById("activityEmail").value = activity.email;
+      document.getElementById("activityNotes").value = activity.notes;
+      document.getElementById("activityDate").value = activity.date;
+      errorMsg.textContent = "";
+      popupOverlay.classList.remove("hidden");
+    }
+
+    // --- Per Page Dropdown ---
+    perPageButton.addEventListener("click", () => {
+      perPageDropdown.classList.toggle("hidden");
+    });
+    perPageDropdown.querySelectorAll(".option").forEach(option => {
+      option.addEventListener("click", function() {
+        rowsPerPage = parseInt(this.getAttribute("data-value"));
+        perPageValue.textContent = rowsPerPage;
+        currentPage = 0;
+        renderTable();
+        perPageDropdown.classList.add("hidden");
+      });
+    });
+
+    // Initial table render
+    renderTable();
+  </script>
+</body>
+</html>

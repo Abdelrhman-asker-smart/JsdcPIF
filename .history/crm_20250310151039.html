@@ -1563,7 +1563,7 @@
       `;
           // Navigate to "edit/{prefix}/{id}" 
           actionDiv.addEventListener("click", function () {
-            window.location.href = `edit/${prefix}.html?id=${item.id}`;
+            window.location.href = `edit/${prefix}/${item.id}`;
           });
           actionCell.appendChild(actionDiv);
           row.appendChild(actionCell);

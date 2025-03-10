@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Activities Table (Sort, Paginate, Edit, Delete)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* TABLE & HEADER STYLES */
+    #activity-table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+    #activity-table thead th {
+      padding: 20px;
+    }
+    thead {
+      background-color: #eef5fa;
+    }
+    table {
+      width: 100%;
+      margin-top: 1rem;
+    }
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    td {
+      color: #4e4e4e;
+      padding: 20px;
+    }
+    /* ROUNDED CORNERS FOR FIRST & LAST TH */
+    #activity-table thead tr th:first-child {
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+    #activity-table thead tr th:last-child {
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    /* SORTING ICONS */
+    .sortable .arrow-up,
+    .sortable .arrow-down {
+      display: block;
+    }
+    .sortable.asc .arrow-down {
+      display: none;
+    }
+    .sortable.desc .arrow-up {
+      display: none;
+    }
+    th.sortable {
+      cursor: pointer;
+    }
+
+    /* CHECKBOX STYLING */
+    .custom-checkbox {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .custom-checkbox input {
+      display: none; /* Hide the default checkbox */
+    }
+    .custom-checkbox .checkmark {
+      width: 24px;
+      height: 24px;
+      background-color: #eef5fa;
+      border: 2px solid #cae0f0;
+      border-radius: 4px;
+      position: relative;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    /* Pinkish checked style */
+    .custom-checkbox input:checked + .checkmark {
+      background-color: #FECACA; /* light pink */
+      border-color: #F87171;     /* salmon/pink border */
+    }
+    .custom-checkbox input:checked + .checkmark::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    /* HIDING ELEMENTS */
+    .hidden {
+      display: none;
+    }
+
+    /* DELETE POPUP STYLES */
+    #deleteConfirmationOverlay .trash-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      fill: #FCA5A5;
+    }
+    #deleteConfirmationOverlay p {
+      margin-bottom: 1.5rem;
+    }
+    #btnCancelDelete {
+      background-color: #E0F2FE; /* Light blue */
+      color: #0284C7;
+    }
+    #btnConfirmDelete {
+      background-color: #FEE2E2; /* Light pink */
+      color: #DC2626;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+    <div class="bg-white p-8 rounded-[15px] mb-[40px]">
+        <div class="flex justify-between flex-wrap items-center">
+          <h3 class="text-2xl font-semibold text-black mb-6">Customer</h3>
+          <div class="gap-6 flex flex-wrap">
+            <button id="btnScanCustomer"
+              class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
+New Activity            </button>
+           
+          </div>
+        </div>
+
+      
+
+        <div class="flex gap-3 items-center p-3 border border-[#E6F0F8] rounded-[12px] mt-6 ml-auto w-fit px-6">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_314_994)">
+              <path
+                d="M15.8045 14.8625L11.8252 10.8831C12.9096 9.55686 13.4428 7.86453 13.3144 6.15617C13.1861 4.44782 12.406 2.85415 11.1356 1.70481C9.86516 0.555472 8.20158 -0.0616068 6.48895 -0.0187856C4.77632 0.0240356 3.14566 0.723481 1.93426 1.93487C0.72287 3.14627 0.0234252 4.77693 -0.019396 6.48956C-0.0622172 8.20219 0.554862 9.86577 1.7042 11.1362C2.85354 12.4066 4.44721 13.1867 6.15556 13.315C7.86392 13.4434 9.55625 12.9102 10.8825 11.8258L14.8619 15.8051C14.9876 15.9266 15.156 15.9938 15.3308 15.9922C15.5056 15.9907 15.6728 15.9206 15.7964 15.797C15.92 15.6734 15.9901 15.5062 15.9916 15.3314C15.9932 15.1566 15.926 14.9882 15.8045 14.8625ZM6.66652 12.0005C5.61169 12.0005 4.58054 11.6877 3.70348 11.1016C2.82642 10.5156 2.14283 9.68265 1.73916 8.70811C1.3355 7.73357 1.22988 6.66122 1.43567 5.62665C1.64145 4.59208 2.14941 3.64178 2.89529 2.8959C3.64117 2.15002 4.59147 1.64206 5.62604 1.43628C6.6606 1.23049 7.73296 1.33611 8.7075 1.73977C9.68204 2.14344 10.515 2.82703 11.101 3.70409C11.6871 4.58115 11.9999 5.6123 11.9999 6.66713C11.9983 8.08113 11.4359 9.43676 10.436 10.4366C9.43615 11.4365 8.08052 11.9989 6.66652 12.0005Z"
+                fill="#559BD0" />
+            </g>
+            <defs>
+              <clipPath id="clip0_314_994">
+                <rect width="16" height="16" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+
+          <input placeholder="search" class="border-0 text-[#CAE0F0] placeholder:text-[#CAE0F0]">
+        </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white rounded shadow">
+      <table id="activity-table" class="min-w-full">
+        <thead>
+          <tr>
+            <th class="p-2 text-center">
+              <label class="custom-checkbox">
+                <input type="checkbox" id="activity-select-all">
+                <span class="checkmark"></span>
+              </label>
+            </th>
+            <!-- Email header with sort icons -->
+            <th class="p-2 text-left cursor-pointer sortable" data-column="email">
+              <div class="flex items-center justify-between">
+                <span>Email</span>
+                <div class="flex flex-col arrows inline-flex h-[40px] justify-center">
+                  <svg class="arrow-up" width="16" style="rotate: 180deg" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.000149727 1.69234L7.69246 9.38464L15.3848 1.69234L14.2886 0.615413L7.69246 7.21157L1.0963 0.615413L0.000149727 1.69234Z" fill="black" />
+                  </svg>
+                  <svg class="arrow-down" width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.000149727 1.69234L7.69246 9.38464L15.3848 1.69234L14.2886 0.615413L7.69246 7.21157L1.0963 0.615413L0.000149727 1.69234Z" fill="black" />
+                  </svg>
+                </div>
+              </div>
+            </th>
+            <!-- Notes header with sort icons -->
+            <th class="p-2 text-left cursor-pointer sortable" data-column="notes">
+              <div class="flex items-center justify-between">
+                <span>Notes</span>
+                <div class="flex flex-col arrows inline-flex h-[40px] justify-center">
+                  <svg class="arrow-up" width="16" style="rotate: 180deg" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.000149727 1.69234L7.69246 9.38464L15.3848 1.69234L14.2886 0.615413L7.69246 7.21157L1.0963 0.615413L0.000149727 1.69234Z" fill="black" />
+                  </svg>
+                  <svg class="arrow-down" width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.000149727 1.69234L7.69246 9.38464L15.3848 1.69234L14.2886 0.615413L7.69246 7.21157L1.0963 0.615413L0.000149727 1.69234Z" fill="black" />
+                  </svg>
+                </div>
+              </div>
+            </th>
+            <!-- Date header with sort icons -->
+            <th class="p-2 text-left cursor-pointer sortable" data-column="date">
+              <div class="flex items-center justify-between">
+                <span>Date</span>
+                <div class="flex flex-col arrows inline-flex h-[40px] justify-center">
+                  <svg class="arrow-up" width="16" style="rotate: 180deg" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.000149727 1.69234L7.69246 9.38464L15.3848 1.69234L14.2886 0.615413L7.69246 7.21157L1.0963 0.615413L0.000149727 1.69234Z" fill="black" />
+                  </svg>
+                  <svg class="arrow-down" width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.000149727 1.69234L7.69246 9.38464L15.3848 1.69234L14.2886 0.615413L7.69246 7.21157L1.0963 0.615413L0.000149727 1.69234Z" fill="black" />
+                  </svg>
+                </div>
+              </div>
+            </th>
+            <th class="p-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody id="activity-table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls (Styled like your snippet) -->
+    <div class="flex items-center justify-end mt-4">
+      <button id="activity-prevPage"
+        class="h-[24px] p-[4px] w-[24px] rounded-[3px_0px_0px_3px] text-gray-400 bg-gray-200 cursor-not-allowed"
+        disabled>
+        <img src="./assets/images/icons8-arrow-50 (1).png" class="w-full h-full" alt="prev page" />
+      </button>
+      <span id="activity-pageIndicator" hidden class="mx-2 text-[#4E4E4E] font-bold">Page 1</span>
+      <button id="activity-nextPage"
+        class="h-[24px] w-[24px] p-[4px] mx-auto inline-block rounded-[0px_3px_3px_0px] text-white bg-[#559BD0]">
+        <img src="./assets/images/icons8-arrow-50 (1).png" style="rotate: 180deg;" class="w-full h-full" alt="next page" />
+      </button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="flex justify-between items-center mb-[50px] mt-4">
+      <div class="flex items-center gap-6 justify-center flex-grow flex-wrap">
+        <p id="lead-resultsText"
+          class="flex-grow max-w-[194px] w-full text-center bg-white text-[#4E4E4E] font-bold rounded-[12px] h-[60px] flex items-center justify-center"
+          style="box-shadow: 0px 12px 20px 0px #00000014">
+          showing 1 result
+        </p>
+        <div class="flex-grow max-w-[194px] w-full text-center relative">
+          <button id="lead-perPageButton"
+            class="bg-white text-[#4E4E4E] rounded-[12px] h-[60px] w-full flex items-center justify-center"
+            style="box-shadow: 0px 12px 20px 0px #00000014">
+            per page <strong id="lead-perPageValue" class="text-[#050504] mx-2">10</strong>
+          </button>
+          <div id="lead-perPageDropdown"
+            class="hidden absolute mt-3 left-0 top-full w-full bg-white border rounded-[12px] shadow-md z-10">
+            <div class="option py-2 cursor-pointer text-black" data-value="10">10</div>
+            <div class="option py-2 cursor-pointer text-black" data-value="5">5</div>
+            <div class="option py-2 cursor-pointer text-black" data-value="20">20</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Overlay for Add/Edit Activity -->
+  <div id="popupOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded max-w-md w-full relative">
+      <!-- Close Button -->
+      <button id="popupCloseBtn" class="absolute top-2 right-2 text-gray-600 text-2xl">&times;</button>
+      <h3 class="text-xl font-bold mb-4">Activity Details</h3>
+      <form id="activityForm">
+        <div class="mb-4">
+          <label for="activityEmail" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="activityEmail" name="email" required class="mt-1 block w-full border border-gray-300 rounded-md p-2">
+        </div>
+        <div class="mb-4">
+          <label for="activityNotes" class="block text-sm font-medium text-gray-700">Notes</label>
+          <textarea id="activityNotes" name="notes" required class="mt-1 block w-full border border-gray-300 rounded-md p-2"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="activityDate" class="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date" id="activityDate" name="date" required class="mt-1 block w-full border border-gray-300 rounded-md p-2">
+        </div>
+        <p id="errorMsg" class="text-sm text-red-500 mb-2"></p>
+        <div class="flex gap-4">
+          <button type="submit" id="btnSaveChanges" class="bg-blue-500 text-white px-4 py-2 rounded">
+            Save Changes
+          </button>
+          <button type="button" id="btnCancelPopup" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Popup Overlay for Confirm Delete -->
+  <div id="deleteConfirmationOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded max-w-sm w-full relative text-center">
+      <button id="deletePopupCloseBtn" class="absolute top-2 right-2 text-gray-600 text-2xl">&times;</button>
+      <!-- Trash icon -->
+      <svg class="trash-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 3V4H4V6H5V19C5 20.65 6.35 22 8 22H16C17.65 22 19 20.65 19 19V6H20V4H15V3C15 1.9 14.1 1 13 1H11C9.9 1 9 1.9 9 3ZM11 3H13V4H11V3ZM17 6V19C17 19.55 16.55 20 16 20H8C7.45 20 7 19.55 7 19V6H17Z"/>
+      </svg>
+      <p class="text-lg mb-6">
+        Are you sure you would like to <span class="text-red-500">delete</span> this item?
+      </p>
+      <div class="flex justify-center gap-4">
+        <button id="btnCancelDelete" class="px-4 py-2 rounded">Cancel</button>
+        <button id="btnConfirmDelete" class="px-4 py-2 rounded">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample activities data with "selected" property
+    let activities = [
+      { id: 1, email: "oli@example.com", notes: "Important client", date: "2025-03-10", selected: false },
+      { id: 2, email: "mary@example.com", notes: "Follow up", date: "2025-03-12", selected: false },
+      { id: 1, email: "oli@example.com", notes: "Important client", date: "2025-03-10", selected: false },
+      { id: 2, email: "mary@example.com", notes: "Follow up", date: "2025-03-12", selected: false },{ id: 1, email: "oli@example.com", notes: "Important client", date: "2025-03-10", selected: false },
+      { id: 2, email: "mary@example.com", notes: "Follow up", date: "2025-03-12", selected: false },{ id: 1, email: "oli@example.com", notes: "Important client", date: "2025-03-10", selected: false },
+      { id: 2, email: "mary@example.com", notes: "Follow up", date: "2025-03-12", selected: false }
+    ];
+
+    // Global variables
+    let currentEditId = null;
+    let currentDeleteId = null;
+    let rowsPerPage = 10;
+    let currentPage = 0;
+    const sortState = { email: 1, notes: 1, date: 1 };
+
+    // Element references
+    const btnNewActivity = document.getElementById("btnNewActivity");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popupCloseBtn = document.getElementById("popupCloseBtn");
+    const btnCancelPopup = document.getElementById("btnCancelPopup");
+    const activityForm = document.getElementById("activityForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    const tableBody = document.getElementById("activity-table-body");
+    const selectAll = document.getElementById("activity-select-all");
+    const prevButton = document.getElementById("activity-prevPage");
+    const nextButton = document.getElementById("activity-nextPage");
+    const pageIndicator = document.getElementById("activity-pageIndicator");
+    const resultsText = document.getElementById("lead-resultsText");
+    const perPageButton = document.getElementById("lead-perPageButton");
+    const perPageValue = document.getElementById("lead-perPageValue");
+    const perPageDropdown = document.getElementById("lead-perPageDropdown");
+
+    // Delete popup references
+    const deleteConfirmationOverlay = document.getElementById("deleteConfirmationOverlay");
+    const deletePopupCloseBtn = document.getElementById("deletePopupCloseBtn");
+    const btnCancelDelete = document.getElementById("btnCancelDelete");
+    const btnConfirmDelete = document.getElementById("btnConfirmDelete");
+
+    /* --- Popup for Add/Edit Activity --- */
+    btnNewActivity.addEventListener("click", () => {
+      currentEditId = null;
+      activityForm.reset();
+      errorMsg.textContent = "";
+      popupOverlay.classList.remove("hidden");
+    });
+    function closePopup() {
+      popupOverlay.classList.add("hidden");
+    }
+    popupCloseBtn.addEventListener("click", closePopup);
+    btnCancelPopup.addEventListener("click", closePopup);
+
+    activityForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("activityEmail").value.trim();
+      const notes = document.getElementById("activityNotes").value.trim();
+      const date = document.getElementById("activityDate").value;
+
+      if (!email || !notes || !date) {
+        errorMsg.textContent = "All fields are required.";
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errorMsg.textContent = "Please enter a valid email.";
+        return;
+      }
+
+      if (currentEditId) {
+        const activity = activities.find(act => act.id === currentEditId);
+        if (activity) {
+          activity.email = email;
+          activity.notes = notes;
+          activity.date = date;
+        }
+      } else {
+        const newId = activities.length ? Math.max(...activities.map(a => a.id)) + 1 : 1;
+        activities.push({ id: newId, email, notes, date, selected: false });
+      }
+      closePopup();
+      renderTable();
+    });
+
+    /* --- Delete Confirmation Popup --- */
+    function openDeletePopup(activityId) {
+      currentDeleteId = activityId;
+      deleteConfirmationOverlay.classList.remove("hidden");
+    }
+    function closeDeletePopup() {
+      deleteConfirmationOverlay.classList.add("hidden");
+      currentDeleteId = null;
+    }
+    deletePopupCloseBtn.addEventListener("click", closeDeletePopup);
+    btnCancelDelete.addEventListener("click", closeDeletePopup);
+    btnConfirmDelete.addEventListener("click", () => {
+      if (currentDeleteId) {
+        activities = activities.filter(act => act.id !== currentDeleteId);
+        currentDeleteId = null;
+        closeDeletePopup();
+        renderTable();
+      }
+    });
+
+    /* --- Update "Select All" Checkbox State for Current Page --- */
+    function updateSelectAllCheckbox() {
+      const startIndex = currentPage * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+      const pageData = activities.slice(startIndex, endIndex);
+      const allSelected = pageData.length > 0 && pageData.every(item => item.selected);
+      selectAll.checked = allSelected;
+    }
+
+    /* --- Table Rendering & Pagination --- */
+    function renderTable() {
+      tableBody.innerHTML = "";
+      const startIndex = currentPage * rowsPerPage;
+      const pageData = activities.slice(startIndex, startIndex + rowsPerPage);
+
+      pageData.forEach(activity => {
+        const row = document.createElement("tr");
+        row.className = "border-b hover:bg-gray-50";
+
+        // Checkbox cell
+        const checkboxCell = document.createElement("td");
+        checkboxCell.className = "p-2 text-center";
+        const checkboxLabel = document.createElement("label");
+        checkboxLabel.className = "custom-checkbox";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = activity.selected;
+        // Update activity.selected and the "Select All" state when changed
+        checkbox.addEventListener("change", function() {
+          activity.selected = this.checked;
+          updateSelectAllCheckbox();
+        });
+        const checkmark = document.createElement("span");
+        checkmark.className = "checkmark";
+        checkboxLabel.appendChild(checkbox);
+        checkboxLabel.appendChild(checkmark);
+        checkboxCell.appendChild(checkboxLabel);
+        row.appendChild(checkboxCell);
+
+        // Email cell
+        const emailCell = document.createElement("td");
+        emailCell.className = "p-2";
+        emailCell.textContent = activity.email;
+        row.appendChild(emailCell);
+
+        // Notes cell
+        const notesCell = document.createElement("td");
+        notesCell.className = "p-2";
+        notesCell.textContent = activity.notes;
+        row.appendChild(notesCell);
+
+        // Date cell
+        const dateCell = document.createElement("td");
+        dateCell.className = "p-2";
+        dateCell.textContent = activity.date;
+        row.appendChild(dateCell);
+
+        // Action cell with Edit and Delete buttons
+        const actionCell = document.createElement("td");
+        actionCell.className = "p-2 text-center flex gap-2 items-center justify-center";
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.className = "text-blue-600 underline";
+        editBtn.addEventListener("click", () => openPopupForEdit(activity));
+        actionCell.appendChild(editBtn);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "text-red-600 underline";
+        deleteBtn.addEventListener("click", () => openDeletePopup(activity.id));
+        actionCell.appendChild(deleteBtn);
+
+        row.appendChild(actionCell);
+        tableBody.appendChild(row);
+      });
+      updateSelectAllCheckbox();
+      updatePagination();
+    }
+
+    function updatePagination() {
+      const totalPages = Math.ceil(activities.length / rowsPerPage);
+      pageIndicator.hidden = false;
+      pageIndicator.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+
+      if (currentPage === 0) {
+        prevButton.disabled = true;
+        prevButton.className =
+          "h-[24px] p-[4px] w-[24px] rounded-[3px_0px_0px_3px] text-gray-400 bg-gray-200 cursor-not-allowed";
+      } else {
+        prevButton.disabled = false;
+        prevButton.className =
+          "h-[24px] p-[4px] w-[24px] rounded-[3px_0px_0px_3px] text-white bg-[#559BD0] cursor-pointer";
+      }
+
+      if (currentPage >= totalPages - 1) {
+        nextButton.disabled = true;
+        nextButton.className =
+          "h-[24px] w-[24px] p-[4px] mx-auto inline-block rounded-[0px_3px_3px_0px] text-gray-400 bg-gray-200 cursor-not-allowed";
+      } else {
+        nextButton.disabled = false;
+        nextButton.className =
+          "h-[24px] w-[24px] p-[4px] mx-auto inline-block rounded-[0px_3px_3px_0px] text-white bg-[#559BD0] cursor-pointer";
+      }
+      updateResultsText();
+    }
+
+    function updateResultsText() {
+      const totalResults = activities.length;
+      const start = currentPage * rowsPerPage + 1;
+      const end = Math.min((currentPage + 1) * rowsPerPage, totalResults);
+      resultsText.textContent = `showing ${start} to ${end} of ${totalResults} result${totalResults > 1 ? "s" : ""}`;
+    }
+
+    prevButton.addEventListener("click", () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderTable();
+      }
+    });
+    nextButton.addEventListener("click", () => {
+      if ((currentPage + 1) * rowsPerPage < activities.length) {
+        currentPage++;
+        renderTable();
+      }
+    });
+
+    /* --- Sorting --- */
+    document.querySelectorAll("th.sortable").forEach(th => {
+      th.addEventListener("click", function() {
+        const column = this.getAttribute("data-column");
+        sortState[column] = -sortState[column];
+        activities.sort((a, b) => {
+          if (a[column] < b[column]) return -1 * sortState[column];
+          if (a[column] > b[column]) return 1 * sortState[column];
+          return 0;
+        });
+        document.querySelectorAll("th.sortable").forEach(header => header.classList.remove("asc", "desc"));
+        this.classList.add(sortState[column] === 1 ? "asc" : "desc");
+        renderTable();
+      });
+    });
+
+    /* --- "Select All" Checkbox --- */
+    selectAll.addEventListener("change", function() {
+      const startIndex = currentPage * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+      const pageData = activities.slice(startIndex, endIndex);
+      pageData.forEach(item => {
+        item.selected = selectAll.checked;
+      });
+      renderTable();
+    });
+
+    /* --- Edit Popup (Populate Form) --- */
+    function openPopupForEdit(activity) {
+      currentEditId = activity.id;
+      document.getElementById("activityEmail").value = activity.email;
+      document.getElementById("activityNotes").value = activity.notes;
+      document.getElementById("activityDate").value = activity.date;
+      errorMsg.textContent = "";
+      popupOverlay.classList.remove("hidden");
+    }
+
+    /* --- Per Page Dropdown --- */
+    perPageButton.addEventListener("click", () => {
+      perPageDropdown.classList.toggle("hidden");
+    });
+    perPageDropdown.querySelectorAll(".option").forEach(option => {
+      option.addEventListener("click", function() {
+        rowsPerPage = parseInt(this.getAttribute("data-value"));
+        perPageValue.textContent = rowsPerPage;
+        currentPage = 0;
+        renderTable();
+        perPageDropdown.classList.add("hidden");
+      });
+    });
+
+    // Initial table render
+    renderTable();
+  </script>
+</body>
+</html>
