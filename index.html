@@ -25,10 +25,29 @@
       height: 500px;
     }
     @media (max-width: 767px) {
-
       .container {
         height: 200px;
       }
+    }
+    .rotate-on-hover {
+      transition: transform 0.8s ease; /* Smooth transition for the rotation */
+    }
+
+    .rotate-on-hover:hover {
+      transform: rotate(180deg); /* Rotates 180 degrees on hover */
+    }
+    .firstAni {
+      opacity: 0; /* Start invisible */
+      transform: translate(100%, 100%) rotateY(0deg); /* Start offset top-right */
+      transform-style: preserve-3d; /* Enable 3D transforms */
+    }
+    .DeveLeft {
+      opacity: 0; /* Start invisible */
+      transform: translate(-100%, -100%) rotate(180deg); /* Start offset top-right */
+    }
+    .RotatingImg {
+      opacity: 0; /* Start invisible */
+      transform: translate(0%, -100%) rotate(90deg); /* Start offset top-right */
     }
   </style>
   <body class="homeBody">
@@ -105,9 +124,7 @@
       <div
         class="SecondSecDet col-12 col-lg-11 py-3 px-1 py-md-5 px-md-4 row flex-wrap"
       >
-        <div
-          class="row col-12 col-lg-7 wow animate__animated animate__backInLeft"
-        >
+        <div class="row col-12 col-lg-7 DeveLeft">
           <div class="row col-12 col-xl-11 align-items-center">
             <h2 class="col-12 col-lg-6">Jabal Al shifa</h2>
             <h3 class="col-12 col-sm-6 col-lg-6 devCompany">
@@ -133,9 +150,7 @@
             </h4>
           </div>
         </div>
-        <div
-          class="col-11 col-lg-5 wow animate__animated animate__fadeInTopRight"
-        >
+        <div class="firstAni col-11 col-lg-5">
           <img
             src="./assets/images/jsdcworkshoo.png"
             alt="image"
@@ -151,10 +166,9 @@
 
     <div class="VisMisSectionMain">
       <div class="VisMisSectionCont col-11 row justify-content-between">
-        <div
-          class="col-12 col-xl-5 vismisimgSect wow animate__animated animate__fadeInTopLeft"
-        >
+        <div class="col-12 col-xl-5 vismisimgSect">
           <img
+            class="RotatingImg"
             src="./assets/images/Mask group.png"
             alt="Jsdc"
             srcset=""
@@ -162,7 +176,7 @@
           />
         </div>
         <div class="col-12 col-xl-5">
-          <div class="wow animate__animated animate__backInRight">
+          <div class="wow animate__animated animate__fadeInTopRight">
             <div class="row align-items-center">
               <div class="col-2">
                 <img
@@ -184,7 +198,7 @@
               </p>
             </div>
           </div>
-          <div class="wow animate__animated animate__backInRight">
+          <div class="wow animate__animated animate__fadeInBottomRight">
             <div class="row align-items-center">
               <div class="col-2">
                 <img
@@ -497,6 +511,7 @@
                 width="35px"
                 height="30px"
                 srcset=""
+                class="rotate-on-hover"
               />
             </a>
           </div>
@@ -524,6 +539,7 @@
                   width="35px"
                   height="30px"
                   srcset=""
+                  class="rotate-on-hover"
                 />
               </a>
             </div>
@@ -615,6 +631,7 @@
                 width="35px"
                 height="30px"
                 srcset=""
+                class="rotate-on-hover"
               />
             </a>
           </div>
@@ -626,7 +643,14 @@
                 alt="Announcements"
                 srcset=""
               />
-              <h4 class="AnnuTitle">You Can Put Title Here</h4>
+              <h4 class="AnnuTitle">
+                You Can Put Title Here
+                <span class="AnnuDesc">
+                  a wholly owned subsidiary of the Public Investment Fund, aims
+                  to contribute An advanced step in the path of tourism
+                  development
+                </span>
+              </h4>
             </div>
             <div class="AnnuBoxes col-11 col-lg-6 col-xl-4">
               <h5 class="AnnuDate">20 June 2024</h5>
@@ -635,7 +659,14 @@
                 alt="Announcements"
                 srcset=""
               />
-              <h4 class="AnnuTitle">You Can Put Title Here</h4>
+              <h4 class="AnnuTitle">
+                You Can Put Title Here
+                <span class="AnnuDesc">
+                  a wholly owned subsidiary of the Public Investment Fund, aims
+                  to contribute An advanced step in the path of tourism
+                  development
+                </span>
+              </h4>
             </div>
             <div class="AnnuBoxes col-11 col-lg-6 col-xl-4">
               <h5 class="AnnuDate">20 June 2024</h5>
@@ -644,7 +675,14 @@
                 alt="Announcements"
                 srcset=""
               />
-              <h4 class="AnnuTitle">You Can Put Title Here</h4>
+              <h4 class="AnnuTitle">
+                You Can Put Title Here
+                <span class="AnnuDesc">
+                  a wholly owned subsidiary of the Public Investment Fund, aims
+                  to contribute An advanced step in the path of tourism
+                  development
+                </span>
+              </h4>
             </div>
           </div>
         </div>
@@ -767,7 +805,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script>
       // Initialize WOW.js
       new WOW().init();
