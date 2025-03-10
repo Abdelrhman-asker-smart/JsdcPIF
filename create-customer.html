@@ -47,6 +47,11 @@
         font-size: 12px;
         display: none;
       }
+      .error-message {
+        color: red;
+        font-size: 12px;
+        display: none;
+      }
 
       button[disabled] {
         opacity: 0.6;
@@ -69,11 +74,20 @@
       .floating-input:focus {
         border-color: #2563eb;
       }
+      .floating-input:focus {
+        border-color: #2563eb;
+      }
 
       .floating-input:focus ~ .floating-label {
         color: #2563eb !important;
       }
+      .floating-input:focus ~ .floating-label {
+        color: #2563eb !important;
+      }
 
+      .floating-input::placeholder {
+        color: transparent;
+      }
       .floating-input::placeholder {
         color: transparent;
       }
@@ -125,6 +139,15 @@
     </style>
   </head>
 
+  <body class="bg-[#EEF5FA]">
+    <!-- Header Section -->
+    <div
+      class="h-[333px] flex items-center relative bg-center rounded-b-[60px] bg-cover"
+      style="background-image: url('./assets/images/bgHero.png')"
+    >
+      <div
+        class="absolute top-0 left-0 w-full h-full rounded-b-[60px]"
+        style="
   <body class="bg-[#EEF5FA]">
     <!-- Header Section -->
     <div
@@ -538,6 +561,38 @@
         } else {
           valid = field.value.trim() !== "";
         }
+        if (field.tagName.toLowerCase() === "select") {
+          valid = field.value !== "";
+        } else if (field.type === "email") {
+          valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
+        } else if (field.type === "url") {
+          valid = /^https?:\/\/.+\..+/.test(field.value);
+        } else if (field.type === "file") {
+          if (field.files && field.files.length > 0) {
+            const file = field.files[0];
+            if (file.size > 2 * 1024 * 1024) {
+              valid = false;
+              if (errorDiv) errorDiv.innerText = "File must be less than 2MB.";
+            } else if (
+              !["application/pdf", "image/jpeg", "image/png"].includes(
+                file.type
+              )
+            ) {
+              valid = false;
+              if (errorDiv)
+                errorDiv.innerText = "File must be a PDF or JPG/PNG.";
+            } else {
+              valid = true;
+              if (errorDiv) errorDiv.innerText = "";
+            }
+          } else {
+            valid = currentFileName !== "";
+            if (!valid && errorDiv)
+              errorDiv.innerText = "This field is required.";
+          }
+        } else {
+          valid = field.value.trim() !== "";
+        }
 
         if (valid) {
           field.classList.remove("error");
@@ -603,6 +658,8 @@
 
       // When clicking on the drop area, trigger file input click
       fileDropArea.addEventListener("click", () => fileInput.click());
+      // When clicking on the drop area, trigger file input click
+      fileDropArea.addEventListener("click", () => fileInput.click());
 
       // Handle drag over and drag leave
       fileDropArea.addEventListener("dragover", (e) => {
@@ -622,7 +679,27 @@
           handleFileChange();
         }
       });
+      // Handle drag over and drag leave
+      fileDropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        fileDropArea.classList.add("bg-blue-100");
+      });
+      fileDropArea.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        fileDropArea.classList.remove("bg-blue-100");
+      });
+      // Handle file drop
+      fileDropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        fileDropArea.classList.remove("bg-blue-100");
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          fileInput.files = e.dataTransfer.files;
+          handleFileChange();
+        }
+      });
 
+      // When file input changes
+      fileInput.addEventListener("change", handleFileChange);
       // When file input changes
       fileInput.addEventListener("change", handleFileChange);
 
@@ -684,7 +761,31 @@
       document.querySelectorAll(".phone").forEach((input) => {
         attachPhoneValidation(input);
       });
+      //validation  phone fields
+      function attachPhoneValidation(input) {
+        input.addEventListener("input", () => {
+          const phoneGroup = input.closest(".phone-group");
+          const errorDiv = phoneGroup.querySelector(".phone-error");
+          if (input.value.trim() !== "") {
+            input.classList.remove("error");
+            errorDiv.style.display = "none";
+          } else {
+            input.classList.add("error");
+            errorDiv.style.display = "block";
+          }
+        });
+      }
+      document.querySelectorAll(".phone").forEach((input) => {
+        attachPhoneValidation(input);
+      });
 
+      // add a new phone field
+      function addPhoneNumber() {
+        const phoneContainer = document.getElementById("phoneNumbers");
+        if (!phoneContainer) {
+          console.error("phoneNumbers container not found");
+          return;
+        }
       // add a new phone field
       function addPhoneNumber() {
         const phoneContainer = document.getElementById("phoneNumbers");
@@ -695,7 +796,15 @@
 
         const newDiv = document.createElement("div");
         newDiv.className = "phone-group relative flex flex-col";
+        const newDiv = document.createElement("div");
+        newDiv.className = "phone-group relative flex flex-col";
 
+        const newInput = document.createElement("input");
+        newInput.type = "tel";
+        newInput.placeholder = " ";
+        newInput.className = "phone floating-input peer ";
+        const newId = "phone" + phoneCounter;
+        newInput.id = newId;
         const newInput = document.createElement("input");
         newInput.type = "tel";
         newInput.placeholder = " ";
@@ -707,7 +816,14 @@
         newLabel.htmlFor = newId;
         newLabel.className = "floating-label ";
         newLabel.innerText = "Phone Number";
+        const newLabel = document.createElement("label");
+        newLabel.htmlFor = newId;
+        newLabel.className = "floating-label ";
+        newLabel.innerText = "Phone Number";
 
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "error-message phone-error mt-1";
+        errorDiv.innerText = "This field is required.";
         const errorDiv = document.createElement("div");
         errorDiv.className = "error-message phone-error mt-1";
         errorDiv.innerText = "This field is required.";
@@ -715,10 +831,19 @@
         newDiv.appendChild(newInput);
         newDiv.appendChild(newLabel);
         newDiv.appendChild(errorDiv);
+        newDiv.appendChild(newInput);
+        newDiv.appendChild(newLabel);
+        newDiv.appendChild(errorDiv);
 
         const iconContainer = document.createElement("div");
         iconContainer.className = "flex items-center justify-between mt-2";
+        const iconContainer = document.createElement("div");
+        iconContainer.className = "flex items-center justify-between mt-2";
 
+        const deleteDiv = document.createElement("div");
+        deleteDiv.className =
+          "flex items-center gap-1 deleteBtn cursor-pointer";
+        deleteDiv.innerHTML = `
         const deleteDiv = document.createElement("div");
         deleteDiv.className =
           "flex items-center gap-1 deleteBtn cursor-pointer";
@@ -740,13 +865,25 @@
   `;
 
         iconContainer.appendChild(deleteDiv);
+        iconContainer.appendChild(deleteDiv);
 
+        newDiv.appendChild(iconContainer);
         newDiv.appendChild(iconContainer);
 
         deleteDiv.onclick = function () {
           newDiv.remove();
         };
+        deleteDiv.onclick = function () {
+          newDiv.remove();
+        };
 
+        const addBtnContainer =
+          phoneContainer.querySelector(".phone-container");
+        if (addBtnContainer) {
+          phoneContainer.insertBefore(newDiv, addBtnContainer);
+        } else {
+          phoneContainer.appendChild(newDiv);
+        }
         const addBtnContainer =
           phoneContainer.querySelector(".phone-container");
         if (addBtnContainer) {
@@ -824,7 +961,23 @@
               if (!firstError) firstError = input;
             }
           });
+          // Validate phone fields
+          document.querySelectorAll(".phone").forEach((input) => {
+            const phoneGroup = input.closest(".phone-group");
+            const errorDiv = phoneGroup.querySelector(".phone-error");
+            if (input.value.trim() === "") {
+              input.classList.add("error");
+              errorDiv.style.display = "block";
+              if (!firstError) firstError = input;
+            }
+          });
 
+          if (firstError) {
+            firstError.focus();
+          } else {
+            const submitButton = document.getElementById("submitButton");
+            submitButton.disabled = true;
+            submitButton.innerText = "Create...";
           if (firstError) {
             firstError.focus();
           } else {
@@ -855,7 +1008,35 @@
               document.getElementById("customerType").value
             );
             formData.append("notes", document.getElementById("notes").value);
+            const formData = new FormData();
+            formData.append(
+              "fullName",
+              document.getElementById("fullName").value
+            );
+            formData.append(
+              "lastName",
+              document.getElementById("lastName").value
+            );
+            formData.append("email", document.getElementById("email").value);
+            formData.append(
+              "website",
+              document.getElementById("website").value
+            );
+            formData.append(
+              "address",
+              document.getElementById("address").value
+            );
+            formData.append(
+              "customerType",
+              document.getElementById("customerType").value
+            );
+            formData.append("notes", document.getElementById("notes").value);
 
+            if (fileInput.files && fileInput.files.length > 0) {
+              formData.append("file", fileInput.files[0]);
+            } else {
+              formData.append("file", currentFileName);
+            }
             if (fileInput.files && fileInput.files.length > 0) {
               formData.append("file", fileInput.files[0]);
             } else {
@@ -865,7 +1046,13 @@
             document.querySelectorAll(".phone").forEach((input, index) => {
               formData.append(`phoneNumbers[${index}]`, input.value);
             });
+            document.querySelectorAll(".phone").forEach((input, index) => {
+              formData.append(`phoneNumbers[${index}]`, input.value);
+            });
 
+            sendData(formData).then((response) => {
+              submitButton.disabled = false;
+              submitButton.innerText = "Submit";
             sendData(formData).then((response) => {
               submitButton.disabled = false;
               submitButton.innerText = "Submit";
@@ -893,3 +1080,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
   </body>
 </html>
+
