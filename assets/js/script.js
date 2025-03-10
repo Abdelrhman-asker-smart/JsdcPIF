@@ -61,8 +61,6 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-
-
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modalImg");
 const modalClose = document.getElementById("modalClose");
@@ -84,4 +82,64 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.classList.remove("open");
   }
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Select all boxes
+const boxes = document.querySelectorAll(".firstAni");
+const DeveLeft = document.querySelectorAll(".DeveLeft");
+const RotatingImg = document.querySelectorAll(".RotatingImg");
+
+// Animate each box
+boxes.forEach((box, index) => {
+  gsap.to(box, {
+    opacity: 1, // Fade in
+    x: 0, // Move to original x-position
+    y: 0, // Move to original y-position
+    rotateY: 720,
+    duration: 1.2, // 1.2 seconds for smoothness
+    ease: "power2.out", // Smooth easing
+    scrollTrigger: {
+      trigger: box, // Trigger when this box scrolls into view
+      start: "top 100%", // Start when top of box hits 80% of viewport
+      end: "top 20%", // End when top hits 20%
+      toggleActions: "play none none reverse", // Play on enter, reverse on leave
+      // markers: true         // Uncomment to debug trigger points
+    },
+  });
+});
+DeveLeft.forEach((box, index) => {
+  gsap.to(box, {
+    opacity: 1, // Fade in
+    x: 0, // Move to original x-position
+    y: 0, // Move to original y-position
+    rotation: 0, // Rotate 360 degrees
+    duration: 1.2, // 1.2 seconds for smoothness
+    ease: "power2.out", // Smooth easing
+    scrollTrigger: {
+      trigger: box, // Trigger when this box scrolls into view
+      start: "top 50%", // Start when top of box hits 80% of viewport
+      end: "top 20%", // End when top hits 20%
+      toggleActions: "play none none reverse", // Play on enter, reverse on leave
+      // markers: true         // Uncomment to debug trigger points
+    },
+  });
+});
+RotatingImg.forEach((box, index) => {
+  gsap.to(box, {
+    opacity: 1, // Fade in
+    x: 0, // Move to original x-position
+    y: 0, // Move to original y-position
+    rotation: 0, // Rotate 360 degrees
+    duration: 1.2, // 1.2 seconds for smoothness
+    ease: "power2.out", // Smooth easing
+    scrollTrigger: {
+      trigger: box, // Trigger when this box scrolls into view
+      start: "top 50%", // Start when top of box hits 80% of viewport
+      end: "top 20%", // End when top hits 20%
+      toggleActions: "play none none reverse", // Play on enter, reverse on leave
+      // markers: true         // Uncomment to debug trigger points
+    },
+  });
 });
