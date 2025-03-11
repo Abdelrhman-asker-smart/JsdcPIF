@@ -173,6 +173,101 @@
     tbody td:last-child {
       min-width: 100px
     }
+
+
+    input {
+      outline: none !important;
+    }
+    .LinksAdj .navbar-nav,
+      li {
+        color: white;
+      }
+      .dropdown-menu {
+        min-width: fit-content;
+      }
+      .dropdown-item {
+        color: white !important;
+      }
+      #dropdownToggle  .dropdown-item  {
+        color: black !important;  
+      }
+      #dropdownButton::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+      }
+      .dropdown .nav-link {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: black;
+      }
+      .dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+      }
+      .dropdown-menu.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      @media screen and (max-width: 1024px)   {
+        .respdrop {
+        position: absolute;
+        background-color: white;
+        border-radius: 40px;
+        top: 10vh;
+        left: 50%;
+        width: 100%;
+        padding: 2rem;
+        transform: translate(-50%, 10px);
+        .dropdown-item {
+          color: black !important;
+          margin: auto;
+        }
+        #dropdownToggle {
+          margin: auto;
+        }
+        ul {
+          row-gap: 1rem;
+          text-align: center;
+        }
+        #profileDropdownButton {
+          margin: 1rem auto;
+        }
+        #dropdownMenu {
+          left: 30% !important;
+        }
+      }
+      }
+    
+      #dropdownMenu {
+        right: 0;
+        top: 100%;
+      }
+      #dropdownMenu {
+        right: 0;
+        top: 100%;
+      }
+      #dropdownToggle {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: black;
+      }
   </style>
 
 </head>

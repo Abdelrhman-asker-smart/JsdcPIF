@@ -131,6 +131,247 @@
   <div class="h-[333px] flex items-center relative bg-center rounded-b-[60px] bg-cover"
     style="background-image: url('./assets/images/bgHero.png')">
     <div class="absolute top-0 left-0 w-full h-full rounded-b-[60px]" style="
+      select:focus ~ .floating-label-select {
+        color: #2563eb;
+      }
+
+      select:focus ~ .floating-label,
+      select:not(:invalid) ~ .floating-label {
+        top: 20px;
+        font-size: 12px;
+        color: #2563eb;
+      }
+      .LinksAdj .navbar-nav,
+      li {
+        color: white;
+      }
+      .dropdown-menu {
+        min-width: fit-content;
+      }
+      .dropdown-item {
+        color: white !important;
+      }
+      #dropdownToggle .dropdown-item {
+        color: black !important;
+      }
+      #dropdownButton::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+      }
+      .dropdown .nav-link {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: black;
+      }
+      .dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+      }
+      .dropdown-menu.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .respdrop {
+        position: absolute;
+        background-color: white;
+        border-radius: 40px;
+        top: 10vh;
+        left: 50%;
+        width: 100%;
+        padding: 2rem;
+        transform: translate(-50%, 10px);
+        .dropdown-item {
+          color: black !important;
+          margin: auto;
+        }
+        #dropdownToggle {
+          margin: auto;
+        }
+        ul {
+          row-gap: 1rem;
+          text-align: center;
+        }
+        #profileDropdownButton {
+          margin: 1rem auto;
+        }
+        #dropdownMenu {
+          left: 30% !important;
+        }
+      }
+      #dropdownMenu {
+        right: 0;
+        top: 100%;
+      }
+      #dropdownToggle {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body class="bg-[#EEF5FA]">
+    <nav class="absolute top-0 left-0 w-screen h-[fit-content] p-4 z-[99]">
+      <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo -->
+        <div>
+          <img
+            src="../assets/images/Group 1.png"
+            alt="Logo"
+            class="h-10 w-auto"
+            width="260px"
+            height="70px"
+          />
+        </div>
+
+        <!-- Toggler Button (Mobile) -->
+        <button
+          id="navbarToggler"
+          class="lg:hidden p-2 border border-gray-300 rounded-md focus:outline-none"
+          aria-label="Toggle navigation"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+
+        <!-- Navbar Links -->
+        <div
+          id="navbarLinks"
+          class="hidden lg:flex lg:items-center lg:space-x-6"
+        >
+          <ul class="flex flex-col lg:flex-row lg:space-x-6">
+            <li>
+              <a
+                href="/"
+                class="text-[#88b651] hover:text-gray-700 dropdown-item"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item">Our Team</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item"
+                >JSDC News</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item">Heriracy</a>
+            </li>
+            <li>
+              <a href="../crm.html" class="hover:text-gray-700 dropdown-item"
+                >JSDC CRM</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item"
+                >Help Center</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item">Events</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item"
+                >Internal Portal</a
+              >
+            </li>
+          </ul>
+
+          <!-- Profile Dropdown -->
+          <li class="relative d-flex justify-content-center">
+            <!-- Dropdown Toggle Button -->
+            <button
+              id="dropdownToggle"
+              class="flex items-center space-x-2 focus:outline-none"
+            >
+              <img
+                src="../assets/images/Ellipse 1.png"
+                alt="pp"
+                class="w-8 h-8 rounded-full"
+              />
+              <span class="dropdown-item">Aasker</span>
+              <svg
+                class="w-4 h-4 dropdown-item"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <ul
+              id="dropdownMenu"
+              class="absolute mt-2 min-w-[fit-content] w-48 bg-white shadow-lg rounded-lg hidden"
+            >
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-black"
+                  >Action</a
+                >
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-black"
+                  >Another action</a
+                >
+              </li>
+              <li>
+                <hr class="border-t my-1" />
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-black"
+                  >Something else here</a
+                >
+              </li>
+            </ul>
+          </li>
+        </div>
+      </div>
+    </nav>
+    <!-- Header Section -->
+    <div
+      class="h-[333px] flex items-center relative bg-center rounded-b-[60px] bg-cover"
+      style="background-image: url('./assets/images/bgHero.png')"
+    >
+      <div
+        class="absolute top-0 left-0 w-full h-full rounded-b-[60px]"
+        style="
           background: linear-gradient(
             180deg,
             rgba(28, 107, 165, 0.7) 0%,

@@ -23,6 +23,39 @@
     @keyframes skeleton-loading {
       0% {
         opacity: 1;
+
+        visibility: visible;
+      }
+      .respdrop {
+        position: absolute;
+        background-color: white;
+        border-radius: 40px;
+        top: 10vh;
+        left: 50%;
+        width: 100%;
+        padding: 2rem;
+        transform: translate(-50%, 10px);
+        .dropdown-item {
+          color: black !important;
+          margin: auto;
+        }
+        #dropdownToggle {
+          margin: auto;
+        }
+        ul {
+          row-gap: 1rem;
+          text-align: center;
+        }
+        #profileDropdownButton {
+          margin: 1rem auto;
+        }
+        #dropdownMenu {
+          left: 30% !important;
+        }
+      }
+      #dropdownMenu {
+        right: 0;
+        top: 100%;
       }
 
       100% {
