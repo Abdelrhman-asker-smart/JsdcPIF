@@ -29,6 +29,7 @@
           opacity: 0.5;
         }
       }
+
       .respdrop {
         position: absolute;
         background-color: white;
@@ -60,7 +61,11 @@
         right: 0;
         top: 100%;
       }
-
+      @media screen and (max-height: 500px) {
+        .respdrop {
+          top: 20vw !important;
+        }
+      }
       .custom-alert {
         position: fixed;
         top: 0;
@@ -390,7 +395,7 @@
             <img
               src="../assets/images/Group 1.png"
               alt="Logo"
-              class="w-auto "
+              class="w-auto"
               width="260px"
               height="70px"
             />
@@ -400,7 +405,7 @@
         <!-- Toggler Button (Mobile) -->
         <button
           id="navbarToggler"
-          class="lg:hidden  ps-5 p-2 border border-gray-300 rounded-md focus:outline-none"
+          class="lg:hidden ps-5 p-2"
           aria-label="Toggle navigation"
         >
           <svg
