@@ -25,7 +25,7 @@
         width: 100%;
       }
       .select-container::after {
-        content: '';
+        content: "";
         position: absolute;
         right: 10px;
         top: 50%;
@@ -40,7 +40,7 @@
       .select-container.open::after {
         transform: translateY(-50%) rotate(180deg);
       }
-      
+
       /* إخفاء أيقونات spinner الافتراضية في حقول الأرقام */
       input[type="number"]::-webkit-inner-spin-button,
       input[type="number"]::-webkit-outer-spin-button {
@@ -50,7 +50,7 @@
       input[type="number"] {
         -moz-appearance: textfield;
       }
-      
+
       /* Floating label & error styles */
       .floating-input {
         display: block;
@@ -164,9 +164,226 @@
         width: 12px;
         height: 8px;
       }
+
+      .LinksAdj .navbar-nav,
+      li {
+        color: white;
+      }
+      .dropdown-menu {
+        min-width: fit-content;
+      }
+      .dropdown-item {
+        color: white !important;
+      }
+      #dropdownToggle  .dropdown-item  {
+        color: black !important;  
+      }
+      #dropdownButton::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+      }
+      .dropdown .nav-link {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: black;
+      }
+      .dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+      }
+      .dropdown-menu.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .respdrop {
+        position: absolute;
+        background-color: white;
+        border-radius: 40px;
+        top: 10vh;
+        width: 100%;
+        padding: 2rem;
+        ul {
+          row-gap: 1rem;
+          text-align: center;
+        }
+        #profileDropdownButton {
+          margin: 1rem auto;
+        }
+        #dropdownMenu {
+          left: 30% !important;
+        }
+      }
+      #dropdownMenu {
+        right: 0;
+        top: 100%;
+      }
+      #dropdownToggle {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: black;
+      }
     </style>
   </head>
   <body class="bg-[#EEF5FA]">
+    <nav class="absolute top-0 left-0 w-screen h-[fit-content] p-4 z-[99]">
+      <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo -->
+        <div>
+          <img
+            src="../assets/images/Group 1.png"
+            alt="Logo"
+            class="h-10 w-auto"
+            width="260px"
+            height="70px"
+          />
+        </div>
+
+        <!-- Toggler Button (Mobile) -->
+        <button
+          id="navbarToggler"
+          class="lg:hidden p-2 border border-gray-300 rounded-md focus:outline-none"
+          aria-label="Toggle navigation"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+
+        <!-- Navbar Links -->
+        <div
+          id="navbarLinks"
+          class="hidden lg:flex lg:items-center lg:space-x-6"
+        >
+          <ul class="flex flex-col lg:flex-row lg:space-x-6">
+            <li>
+              <a
+                href="/"
+                class="text-[#88b651] hover:text-gray-700 dropdown-item"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item">Our Team</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item"
+                >JSDC News</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item">Heriracy</a>
+            </li>
+            <li>
+              <a href="../crm.html" class="hover:text-gray-700 dropdown-item"
+                >JSDC CRM</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item"
+                >Help Center</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item">Events</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-700 dropdown-item"
+                >Internal Portal</a
+              >
+            </li>
+          </ul>
+
+          <!-- Profile Dropdown -->
+          <li class="relative d-flex justify-content-center">
+            <!-- Dropdown Toggle Button -->
+            <button
+              id="dropdownToggle"
+              class="flex items-center space-x-2 focus:outline-none"
+            >
+              <img
+                src="../assets/images/Ellipse 1.png"
+                alt="pp"
+                class="w-8 h-8 rounded-full"
+              />
+              <span class="dropdown-item">Aasker</span>
+              <svg
+                class="w-4 h-4 dropdown-item"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <ul
+              id="dropdownMenu"
+              class="absolute mt-2 min-w-[fit-content] w-48 bg-white shadow-lg rounded-lg hidden"
+            >
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-gray-100 dropdown-item"
+                  >Action</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-gray-100 dropdown-item"
+                  >Another action</a
+                >
+              </li>
+              <li>
+                <hr class="border-t my-1" />
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-gray-100 dropdown-item"
+                  >Something else here</a
+                >
+              </li>
+            </ul>
+          </li>
+        </div>
+      </div>
+    </nav>
     <div class="container bg-white p-6 rounded-2xl shadow mb-8">
       <h1 class="text-2xl font-semibold text-[#0D0D0C]">Create Opportunity</h1>
       <hr class="my-4" />
@@ -184,7 +401,9 @@
               <option value="lead2">Lead 2</option>
             </select>
             <label for="lead" class="floating-label-select">Lead</label>
-            <div class="error-message" id="leadError">This field is required.</div>
+            <div class="error-message" id="leadError">
+              This field is required.
+            </div>
           </div>
           <!-- Stage (Select) -->
           <div class="select-container relative">
@@ -197,7 +416,9 @@
               <option value="stage2">Stage 2</option>
             </select>
             <label for="stage" class="floating-label-select">Stage</label>
-            <div class="error-message" id="stageError">This field is required.</div>
+            <div class="error-message" id="stageError">
+              This field is required.
+            </div>
           </div>
           <!-- Expected Value (Number) with custom spinner -->
           <div class="relative custom-number-input">
@@ -210,14 +431,29 @@
             <div class="number-controls">
               <!-- زر الزيادة: نعكس التأثير بحيث يظهر السهم لأعلى -->
               <button type="button" class="number-increment">
-                <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
-                  <path d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z" fill="black"/>
+                <svg
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="transform: rotate(180deg)"
+                >
+                  <path
+                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                    fill="black"
+                  />
                 </svg>
               </button>
               <!-- زر النقصان: يظهر السهم طبيعي (لأسفل) -->
               <button type="button" class="number-decrement">
-                <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z" fill="black"/>
+                <svg
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                    fill="black"
+                  />
                 </svg>
               </button>
             </div>
@@ -238,13 +474,28 @@
             />
             <div class="number-controls">
               <button type="button" class="number-increment">
-                <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
-                  <path d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z" fill="black"/>
+                <svg
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="transform: rotate(180deg)"
+                >
+                  <path
+                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                    fill="black"
+                  />
                 </svg>
               </button>
               <button type="button" class="number-decrement">
-                <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z" fill="black"/>
+                <svg
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                    fill="black"
+                  />
                 </svg>
               </button>
             </div>
@@ -263,9 +514,7 @@
               placeholder=" "
               class="floating-input peer"
             />
-            <label for="lossReason" class="floating-label">
-              Loss Reason
-            </label>
+            <label for="lossReason" class="floating-label"> Loss Reason </label>
             <div class="error-message" id="lossReasonError">
               This field is required.
             </div>
@@ -307,17 +556,28 @@
           <div id="fileDropAreaOpportunity" class="file-drop-area">
             <input type="file" id="opportunityFile" class="hidden" />
             <div class="flex flex-col justify-center items-center gap-4">
-              <span class="text-[#559BD0] font-bold text-xl" id="fileInputLabelOpportunity">
+              <span
+                class="text-[#559BD0] font-bold text-xl"
+                id="fileInputLabelOpportunity"
+              >
                 Drag & Drop your file or Browse
               </span>
               <div id="fileDropAreaImageOpportunity">
-                <svg width="103" height="102" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="103"
+                  height="102"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <rect width="103" height="102" rx="12" fill="#cae0f0" />
                 </svg>
               </div>
             </div>
           </div>
-          <span id="currentFileNameSpanOpportunity" class="mt-2 block text-sm text-gray-700"></span>
+          <span
+            id="currentFileNameSpanOpportunity"
+            class="mt-2 block text-sm text-gray-700"
+          ></span>
           <div class="error-message" id="opportunityFileError">
             This field is required.
           </div>
@@ -348,10 +608,17 @@
         </div>
         <!-- Submit Buttons -->
         <div class="flex gap-3 flex-wrap">
-          <button type="submit" id="submitButton" class="flex-grow bg-[#559BD0] text-white px-4 py-2 rounded font-bold">
+          <button
+            type="submit"
+            id="submitButton"
+            class="flex-grow bg-[#559BD0] text-white px-4 py-2 rounded font-bold"
+          >
             Create Opportunity
           </button>
-          <a href="dashboard.html" class="flex-grow border border-[#559BD0] text-[#559BD0] px-4 py-2 rounded text-center font-bold">
+          <a
+            href="dashboard.html"
+            class="flex-grow border border-[#559BD0] text-[#559BD0] px-4 py-2 rounded text-center font-bold"
+          >
             Cancel
           </a>
         </div>
@@ -361,7 +628,7 @@
       // المتغيرات العالمية لملف الـ opportunity وعداد المنافسين
       let currentFileNameOpportunity = "";
       let competitorCounter = 1;
-      
+
       // التحقق من الحقول القياسية
       function validateField(field) {
         const errorDiv = document.getElementById(field.id + "Error");
@@ -374,7 +641,11 @@
             if (file.size > 2 * 1024 * 1024) {
               valid = false;
               if (errorDiv) errorDiv.innerText = "File must be less than 2MB.";
-            } else if (!["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
+            } else if (
+              !["application/pdf", "image/jpeg", "image/png"].includes(
+                file.type
+              )
+            ) {
               valid = false;
               if (errorDiv)
                 errorDiv.innerText = "File must be a PDF or JPG/PNG.";
@@ -391,23 +662,32 @@
           valid = field.value.trim() !== "";
         }
         if (valid) {
-          if (field.type === "file" && document.getElementById("fileDropAreaOpportunity")) {
-            document.getElementById("fileDropAreaOpportunity").classList.remove("border-red-500");
+          if (
+            field.type === "file" &&
+            document.getElementById("fileDropAreaOpportunity")
+          ) {
+            document
+              .getElementById("fileDropAreaOpportunity")
+              .classList.remove("border-red-500");
           }
           field.classList.remove("error");
           if (errorDiv) errorDiv.style.display = "none";
         }
         return valid;
       }
-      
+
       function addValidationListener(field) {
-        if (field.tagName.toLowerCase() === "select" || field.type === "file" || field.type === "date") {
+        if (
+          field.tagName.toLowerCase() === "select" ||
+          field.type === "file" ||
+          field.type === "date"
+        ) {
           field.addEventListener("change", () => validateField(field));
         } else {
           field.addEventListener("input", () => validateField(field));
         }
       }
-      
+
       // ربط التحقق للحقول القياسية
       [
         "lead",
@@ -422,36 +702,44 @@
         "assignedTo",
         "opportunityFile",
         "notes",
-        "details"
+        "details",
       ].forEach((id) => {
         const field = document.getElementById(id);
         if (field) addValidationListener(field);
       });
-      
+
       // إضافة حدث لتحويل الحاوية الخاصة بالـ select عند focus و blur
-      document.querySelectorAll(".select-container select").forEach((select) => {
-        select.addEventListener("focus", function () {
-          this.parentElement.classList.add("open");
+      document
+        .querySelectorAll(".select-container select")
+        .forEach((select) => {
+          select.addEventListener("focus", function () {
+            this.parentElement.classList.add("open");
+          });
+          select.addEventListener("blur", function () {
+            this.parentElement.classList.remove("open");
+          });
+          // كما نقوم بإضافة/إزالة كلاس float عند تغيير القيمة
+          select.addEventListener("change", function () {
+            if (this.value !== "") {
+              this.classList.add("float");
+            } else {
+              this.classList.remove("float");
+            }
+          });
         });
-        select.addEventListener("blur", function () {
-          this.parentElement.classList.remove("open");
-        });
-        // كما نقوم بإضافة/إزالة كلاس float عند تغيير القيمة
-        select.addEventListener("change", function () {
-          if (this.value !== "") {
-            this.classList.add("float");
-          } else {
-            this.classList.remove("float");
-          }
-        });
-      });
-      
+
       // منطق رفع الملف عبر السحب والإفلات لملف الـ opportunity
       const opportunityFileInput = document.getElementById("opportunityFile");
-      const fileDropAreaOpportunity = document.getElementById("fileDropAreaOpportunity");
-      const fileInputLabelOpportunity = document.getElementById("fileInputLabelOpportunity");
-      
-      fileDropAreaOpportunity.addEventListener("click", () => opportunityFileInput.click());
+      const fileDropAreaOpportunity = document.getElementById(
+        "fileDropAreaOpportunity"
+      );
+      const fileInputLabelOpportunity = document.getElementById(
+        "fileInputLabelOpportunity"
+      );
+
+      fileDropAreaOpportunity.addEventListener("click", () =>
+        opportunityFileInput.click()
+      );
       fileDropAreaOpportunity.addEventListener("dragover", (e) => {
         e.preventDefault();
         fileDropAreaOpportunity.classList.add("bg-blue-100");
@@ -468,50 +756,62 @@
           handleOpportunityFileChange();
         }
       });
-      
-      opportunityFileInput.addEventListener("change", handleOpportunityFileChange);
-      
+
+      opportunityFileInput.addEventListener(
+        "change",
+        handleOpportunityFileChange
+      );
+
       function handleOpportunityFileChange() {
-        if (opportunityFileInput.files && opportunityFileInput.files.length > 0) {
+        if (
+          opportunityFileInput.files &&
+          opportunityFileInput.files.length > 0
+        ) {
           const file = opportunityFileInput.files[0];
           currentFileNameOpportunity = file.name;
-          fileInputLabelOpportunity.textContent = "Selected File: " + currentFileNameOpportunity;
+          fileInputLabelOpportunity.textContent =
+            "Selected File: " + currentFileNameOpportunity;
           if (file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.onload = function (e) {
-              document.getElementById("fileDropAreaImageOpportunity").innerHTML =
-                `<img src="${e.target.result}" alt="Image Preview" class="max-w-full max-h-48" />`;
+              document.getElementById(
+                "fileDropAreaImageOpportunity"
+              ).innerHTML = `<img src="${e.target.result}" alt="Image Preview" class="max-w-full max-h-48" />`;
             };
             reader.readAsDataURL(file);
           } else if (file.type === "application/pdf") {
-            document.getElementById("fileDropAreaImageOpportunity").innerHTML =
-              `<svg width="100" height="100">
+            document.getElementById(
+              "fileDropAreaImageOpportunity"
+            ).innerHTML = `<svg width="100" height="100">
                 <rect width="100" height="100" rx="15" fill="#E53E3E"/>
                 <text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial" font-weight="bold">PDF</text>
               </svg>`;
           } else {
-            document.getElementById("fileDropAreaImageOpportunity").innerHTML =
-              `<svg width="103" height="102" fill="#cae0f0">
+            document.getElementById(
+              "fileDropAreaImageOpportunity"
+            ).innerHTML = `<svg width="103" height="102" fill="#cae0f0">
                 <rect width="103" height="102" rx="12"/>
               </svg>`;
           }
         } else {
           currentFileNameOpportunity = "";
-          fileInputLabelOpportunity.textContent = "Drag & Drop your file or Browse";
-          document.getElementById("fileDropAreaImageOpportunity").innerHTML =
-            `<svg width="103" height="102" fill="#cae0f0">
+          fileInputLabelOpportunity.textContent =
+            "Drag & Drop your file or Browse";
+          document.getElementById(
+            "fileDropAreaImageOpportunity"
+          ).innerHTML = `<svg width="103" height="102" fill="#cae0f0">
               <rect width="103" height="102" rx="12"/>
             </svg>`;
         }
         validateField(opportunityFileInput);
       }
-      
+
       // منطق الحقول الديناميكية للمنافسين
       function addCompetitor() {
         const container = document.getElementById("competitorsContainer");
         const competitorDiv = document.createElement("div");
         competitorDiv.className = "competitor-entry";
-      
+
         // حقل اسم المنافس
         const nameDiv = document.createElement("div");
         nameDiv.className = "relative mb-4";
@@ -528,15 +828,15 @@
         nameError.className = "error-message";
         nameError.innerText = "This field is required.";
         nameDiv.appendChild(nameError);
-      
+
         // إضافة مستمع لتغيير القيمة على حقل اسم المنافس
-        nameInput.addEventListener("input", function() {
+        nameInput.addEventListener("input", function () {
           if (nameInput.value.trim() !== "") {
             nameInput.classList.remove("error");
             nameError.style.display = "none";
           }
         });
-      
+
         // حقل مرفق المنافس
         const fileDiv = document.createElement("div");
         fileDiv.className = "relative";
@@ -548,22 +848,23 @@
         fileError.className = "error-message";
         fileError.innerText = "File is required.";
         fileDiv.appendChild(fileError);
-      
+
         // إضافة مستمع لتغيير حالة حقل الملف
-        fileInput.addEventListener("change", function() {
+        fileInput.addEventListener("change", function () {
           if (fileInput.files.length > 0) {
             fileInput.classList.remove("error");
             fileError.style.display = "none";
           }
         });
-      
+
         competitorDiv.appendChild(nameDiv);
         competitorDiv.appendChild(fileDiv);
-      
+
         // إضافة زر حذف إذا كان هناك أكثر من منافس
         if (container.children.length > 0) {
           const deleteDiv = document.createElement("div");
-          deleteDiv.className = "deleteBtn cursor-pointer absolute top-0 right-0";
+          deleteDiv.className =
+            "deleteBtn cursor-pointer absolute top-0 right-0";
           deleteDiv.innerHTML = `
             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_723_4826)">
@@ -584,19 +885,21 @@
           };
           competitorDiv.appendChild(deleteDiv);
         }
-      
+
         container.appendChild(competitorDiv);
         competitorCounter++;
       }
-      
+
       // التأكد من وجود حقل منافس واحد على الأقل عند تحميل الصفحة
       document.addEventListener("DOMContentLoaded", function () {
-        if (document.getElementById("competitorsContainer").children.length === 0) {
+        if (
+          document.getElementById("competitorsContainer").children.length === 0
+        ) {
           addCompetitor();
         }
-        
+
         // إضافة مستمع للأزرار الخاصة بحقول الأرقام المخصصة
-        document.querySelectorAll(".custom-number-input").forEach(wrapper => {
+        document.querySelectorAll(".custom-number-input").forEach((wrapper) => {
           const input = wrapper.querySelector('input[type="number"]');
           const incBtn = wrapper.querySelector(".number-increment");
           const decBtn = wrapper.querySelector(".number-decrement");
@@ -610,89 +913,152 @@
           });
         });
       });
-      
+
       // معالجة إرسال النموذج مع إعادة فهرسة بيانات المنافسين
-      document.getElementById("opportunityForm").addEventListener("submit", function (event) {
-        event.preventDefault();
-        let firstError = null;
-        const fieldIds = [
-          "lead",
-          "stage",
-          "expectedValueNumber",
-          "expectedValueText",
-          "status",
-          "priority",
-          "closureDate",
-          "actualValue",
-          "lossReason",
-          "assignedTo",
-          "opportunityFile",
-          "notes",
-          "details"
-        ];
-        fieldIds.forEach((id) => {
-          const field = document.getElementById(id);
-          if (field && !validateField(field)) {
-            field.classList.add("error");
-            if (field.type === "file" && document.getElementById("fileDropAreaOpportunity")) {
-              document.getElementById("fileDropAreaOpportunity").classList.add("border-red-500");
+      document
+        .getElementById("opportunityForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          let firstError = null;
+          const fieldIds = [
+            "lead",
+            "stage",
+            "expectedValueNumber",
+            "expectedValueText",
+            "status",
+            "priority",
+            "closureDate",
+            "actualValue",
+            "lossReason",
+            "assignedTo",
+            "opportunityFile",
+            "notes",
+            "details",
+          ];
+          fieldIds.forEach((id) => {
+            const field = document.getElementById(id);
+            if (field && !validateField(field)) {
+              field.classList.add("error");
+              if (
+                field.type === "file" &&
+                document.getElementById("fileDropAreaOpportunity")
+              ) {
+                document
+                  .getElementById("fileDropAreaOpportunity")
+                  .classList.add("border-red-500");
+              }
+              const errorDiv = document.getElementById(id + "Error");
+              if (errorDiv) errorDiv.style.display = "block";
+              if (!firstError) firstError = field;
             }
-            const errorDiv = document.getElementById(id + "Error");
-            if (errorDiv) errorDiv.style.display = "block";
-            if (!firstError) firstError = field;
+          });
+
+          // التحقق من صحة بيانات المنافسين
+          const competitorEntries =
+            document.querySelectorAll(".competitor-entry");
+          competitorEntries.forEach((entry) => {
+            const nameInput = entry.querySelector(".competitor-name");
+            const fileInput = entry.querySelector(".competitor-file");
+            if (nameInput && nameInput.value.trim() === "") {
+              nameInput.classList.add("error");
+              const err = nameInput.nextElementSibling.nextElementSibling;
+              if (err) err.style.display = "block";
+              if (!firstError) firstError = nameInput;
+            }
+            if (fileInput && fileInput.files.length === 0) {
+              fileInput.classList.add("error");
+              const err = fileInput.nextElementSibling;
+              if (err) err.style.display = "block";
+              if (!firstError) firstError = fileInput;
+            }
+          });
+
+          if (firstError) {
+            firstError.focus();
+            return;
           }
+
+          const formData = new FormData(
+            document.getElementById("opportunityForm")
+          );
+
+          // إعادة فهرسة بيانات المنافسين بحيث تكون المفاتيح متسلسلة
+          competitorEntries.forEach((entry, index) => {
+            const nameInput = entry.querySelector(".competitor-name");
+            const fileInput = entry.querySelector(".competitor-file");
+            formData.append(`competitors[${index}][name]`, nameInput.value);
+            if (fileInput.files.length > 0) {
+              formData.append(
+                `competitors[${index}][file]`,
+                fileInput.files[0]
+              );
+            }
+          });
+
+          // للعرض فقط: طباعة جميع بيانات formData في وحدة التحكم
+          for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+          }
+
+          // محاكاة إرسال النموذج
+          const submitButton = document.getElementById("submitButton");
+          submitButton.disabled = true;
+          submitButton.innerText = "Creating...";
+          setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerText = "Create Opportunity";
+            alert("Opportunity Created Successfully!");
+          }, 2000);
         });
-      
-        // التحقق من صحة بيانات المنافسين
-        const competitorEntries = document.querySelectorAll(".competitor-entry");
-        competitorEntries.forEach((entry) => {
-          const nameInput = entry.querySelector(".competitor-name");
-          const fileInput = entry.querySelector(".competitor-file");
-          if (nameInput && nameInput.value.trim() === "") {
-            nameInput.classList.add("error");
-            const err = nameInput.nextElementSibling.nextElementSibling;
-            if (err) err.style.display = "block";
-            if (!firstError) firstError = nameInput;
-          }
-          if (fileInput && fileInput.files.length === 0) {
-            fileInput.classList.add("error");
-            const err = fileInput.nextElementSibling;
-            if (err) err.style.display = "block";
-            if (!firstError) firstError = fileInput;
-          }
-        });
-      
-        if (firstError) {
-          firstError.focus();
-          return;
+    </script>
+    <script>
+      // Toggle Navbar Links on Mobile
+      const navbarToggler = document.getElementById("navbarToggler");
+      const navbarLinks = document.getElementById("navbarLinks");
+
+      navbarToggler.addEventListener("click", () => {
+        navbarLinks.classList.toggle("hidden");
+        navbarLinks.classList.add("respdrop");
+        navbarLinks.classList.add("container");
+      });
+
+      // Toggle Profile Dropdown
+      const profileDropdownButton = document.getElementById(
+        "profileDropdownButton"
+      );
+      const profileDropdownMenu = document.getElementById(
+        "profileDropdownMenu"
+      );
+
+      profileDropdownButton.addEventListener("click", () => {
+        profileDropdownMenu.classList.toggle("open");
+      });
+
+      // Close Dropdown When Clicking Outside
+      document.addEventListener("click", (event) => {
+        if (!profileDropdownButton.contains(event.target)) {
+          profileDropdownMenu.classList.remove("open");
         }
-      
-        const formData = new FormData(document.getElementById("opportunityForm"));
-      
-        // إعادة فهرسة بيانات المنافسين بحيث تكون المفاتيح متسلسلة
-        competitorEntries.forEach((entry, index) => {
-          const nameInput = entry.querySelector(".competitor-name");
-          const fileInput = entry.querySelector(".competitor-file");
-          formData.append(`competitors[${index}][name]`, nameInput.value);
-          if (fileInput.files.length > 0) {
-            formData.append(`competitors[${index}][file]`, fileInput.files[0]);
-          }
-        });
-      
-        // للعرض فقط: طباعة جميع بيانات formData في وحدة التحكم
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
+      });
+    </script>
+    <script>
+      // Get the dropdown toggle button and menu
+      const dropdownToggle = document.getElementById("dropdownToggle");
+      const dropdownMenu = document.getElementById("dropdownMenu");
+
+      // Toggle dropdown visibility
+      dropdownToggle.addEventListener("click", () => {
+        dropdownMenu.classList.toggle("hidden");
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (event) => {
+        if (
+          !dropdownToggle.contains(event.target) &&
+          !dropdownMenu.contains(event.target)
+        ) {
+          dropdownMenu.classList.add("hidden");
         }
-      
-        // محاكاة إرسال النموذج
-        const submitButton = document.getElementById("submitButton");
-        submitButton.disabled = true;
-        submitButton.innerText = "Creating...";
-        setTimeout(() => {
-          submitButton.disabled = false;
-          submitButton.innerText = "Create Opportunity";
-          alert("Opportunity Created Successfully!");
-        }, 2000);
       });
     </script>
   </body>
