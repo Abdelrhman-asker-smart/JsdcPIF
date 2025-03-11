@@ -122,26 +122,7 @@
       top: 20px;
       font-size: 12px;
       color: #2563eb;
-    }
-  </style>
-</head>
-
-<body class="bg-[#EEF5FA]">
-  <!-- Header Section -->
-  <div class="h-[333px] flex items-center relative bg-center rounded-b-[60px] bg-cover"
-    style="background-image: url('./assets/images/bgHero.png')">
-    <div class="absolute top-0 left-0 w-full h-full rounded-b-[60px]" style="
-      select:focus ~ .floating-label-select {
-        color: #2563eb;
-      }
-
-      select:focus ~ .floating-label,
-      select:not(:invalid) ~ .floating-label {
-        top: 20px;
-        font-size: 12px;
-        color: #2563eb;
-      }
-      .LinksAdj .navbar-nav,
+    } .LinksAdj .navbar-nav,
       li {
         color: white;
       }
@@ -224,8 +205,11 @@
         gap: 0.5rem;
         color: black;
       }
-    </style>
-  </head>
+  </style>
+</head>
+
+<body class="bg-[#EEF5FA]">
+
 
   <body class="bg-[#EEF5FA]">
     <nav class="absolute top-0 left-0 w-screen h-[fit-content] p-4 z-[99]">
@@ -999,7 +983,56 @@
       });
 
   </script>
-  
+   <script>
+    // Toggle Navbar Links on Mobile
+    const navbarToggler = document.getElementById("navbarToggler");
+    const navbarLinks = document.getElementById("navbarLinks");
+
+    navbarToggler.addEventListener("click", () => {
+      navbarLinks.classList.toggle("hidden");
+      navbarLinks.classList.add("respdrop");
+      navbarLinks.classList.add("container");
+    });
+
+    // Toggle Profile Dropdown
+    const profileDropdownButton = document.getElementById(
+      "profileDropdownButton"
+    );
+    const profileDropdownMenu = document.getElementById(
+      "profileDropdownMenu"
+    );
+
+    profileDropdownButton.addEventListener("click", () => {
+      profileDropdownMenu.classList.toggle("open");
+    });
+
+    // Close Dropdown When Clicking Outside
+    document.addEventListener("click", (event) => {
+      if (!profileDropdownButton.contains(event.target)) {
+        profileDropdownMenu.classList.remove("open");
+      }
+    });
+  </script>
+  <script>
+    // Get the dropdown toggle button and menu
+    const dropdownToggle = document.getElementById("dropdownToggle");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    // Toggle dropdown visibility
+    dropdownToggle.addEventListener("click", () => {
+      dropdownMenu.classList.toggle("hidden");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (event) => {
+      if (
+        !dropdownToggle.contains(event.target) &&
+        !dropdownMenu.contains(event.target)
+      ) {
+        dropdownMenu.classList.add("hidden");
+      }
+    });
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 </body>
 
