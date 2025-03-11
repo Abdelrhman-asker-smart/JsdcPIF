@@ -273,7 +273,7 @@ li {
     opacity: 1; /* Show on hover */
   }
 }
-@media (max-width: 1280px) {
+@media (max-width: 980px) {
   .straObjBoxParent {
     .straObjBox {
       min-width: calc(100% / 2.5);
@@ -735,6 +735,7 @@ li {
   position: relative;
   padding: 0 !important; /* Optional: Adds some spacing */
   overflow: hidden;
+  border-radius: 24px;
 }
 
 /* Style the description and hide it initially with opacity */
@@ -760,6 +761,7 @@ li {
   position: relative;
   width: fit-content;
   img {
+    width: 100%;
     max-width: 100%;
   }
   &::after {
@@ -883,6 +885,20 @@ li {
 @media (min-width: 768px) {
   .container {
     width: 750px !important;
+  }
+}
+@media (max-width: 1400px) {
+  .AnnuBoxes {
+    img {
+      width: 350px;
+    }
+  }
+}
+@media (max-width: 992px) {
+  .AnnuBoxes {
+    img {
+      width: 100%;
+    }
   }
 }
 @media (min-width: 992px) {
