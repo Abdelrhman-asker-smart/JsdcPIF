@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
   <title>CRM Dashboard</title>
-  <style>
-    #coustomer-table {
-      border-collapse: separate;
-      border-spacing: 0;
-    }
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
+  <style>
     #coustomer-table thead th {
       padding: 20px;
     }
@@ -19,7 +19,6 @@
     #lead-table thead th {
       padding: 20px;
     }
-
 
     #opportunities-table thead th {
       padding: 20px;
@@ -55,28 +54,6 @@
       border-bottom-right-radius: 8px;
     }
 
-    .hidden {
-      display: none;
-    }
-
-    .custom-tab p {
-      color: black !important;
-    }
-
-    .custom-tab {
-      justify-content: start;
-    }
-
-    .triangle {
-      display: none;
-    }
-
-    @media (min-width: 1031px) {
-      .triangle {
-        display: block;
-      }
-    }
-
     .active-tab {
       border: 1px solid #559bd0 !important;
       box-shadow: 0px 12px 12px 0px #559bd01a;
@@ -84,10 +61,6 @@
 
     .active-tab p {
       color: #559bd0 !important;
-    }
-
-    .active-tab .triangle {
-      display: block;
     }
 
     table {
@@ -147,23 +120,11 @@
       display: none;
     }
 
-    .custom-tab p {
-      color: black !important;
-    }
-
-    .custom-tab {
-      justify-content: start;
-    }
 
     .custom-tab .triangle {
       display: none;
     }
 
-    @media (max-width: 1030px) {
-      .custom-tab .triangle {
-        display: none !important;
-      }
-    }
 
     .active-tab {
       border: 1px solid #559bd0 !important;
@@ -182,26 +143,6 @@
       .custom-tab .triangle {
         display: none !important;
       }
-    }
-
-    .custom-checkbox {
-      display: inline-flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .custom-checkbox input {
-      display: none;
-    }
-
-    .custom-checkbox .checkmark {
-      width: 24px;
-      height: 24px;
-      background-color: #eef5fa;
-      border: 2px solid #cae0f0;
-      border-radius: 4px;
-      position: relative;
-      transition: background-color 0.3s ease;
     }
 
     .custom-checkbox input:checked+.checkmark {
@@ -232,311 +173,118 @@
     tbody td:last-child {
       min-width: 100px
     }
-
-    input {
-      outline: none !important;
-    }
-    .LinksAdj .navbar-nav,
-      li {
-        color: white;
-      }
-      .dropdown-menu {
-        min-width: fit-content;
-      }
-      .dropdown-item {
-        color: white !important;
-      }
-      #dropdownToggle  .dropdown-item  {
-        color: black !important;  
-      }
-      #dropdownButton::after {
-        display: inline-block;
-        margin-left: 0.255em;
-        vertical-align: 0.255em;
-        content: "";
-        border-top: 0.3em solid;
-        border-right: 0.3em solid transparent;
-        border-bottom: 0;
-        border-left: 0.3em solid transparent;
-      }
-      .dropdown .nav-link {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 0.5rem;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        color: black;
-      }
-      .dropdown-menu {
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-      }
-      .dropdown-menu.open {
-        opacity: 1;
-        visibility: visible;
-      }
-      @media screen and (max-width: 1024px)   {
-        .respdrop {
-        position: absolute;
-        background-color: white;
-        border-radius: 40px;
-        top: 10vh;
-        left: 50%;
-        width: 100%;
-        padding: 2rem;
-        transform: translate(-50%, 10px);
-        .dropdown-item {
-          color: black !important;
-          margin: auto;
-        }
-        #dropdownToggle {
-          margin: auto;
-        }
-        ul {
-          row-gap: 1rem;
-          text-align: center;
-        }
-        #profileDropdownButton {
-          margin: 1rem auto;
-        }
-        #dropdownMenu {
-          left: 30% !important;
-        }
-      }
-      }
-    
-      #dropdownMenu {
-        right: 0;
-        top: 100%;
-      }
-      #dropdownMenu {
-        right: 0;
-        top: 100%;
-      }
-      #dropdownToggle {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 0.5rem;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        color: black;
-      }
   </style>
-  <link rel="stylesheet" href="./assets/css/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 </head>
 
-<body class="bg-[#EEF5FA]">
-  <nav class="absolute top-0 left-0 w-screen h-[fit-content] p-4 z-[99]">
-    <div class="container mx-auto flex justify-between items-center">
-      <!-- Logo -->
+<body class="bg-[#EEF5FA]  relative">
+
+  <nav id="navbar" class="NavBarMain navbar navbar-expand-lg z-[5000]">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
       <div>
-        <img
-          src="../assets/images/Group 1.png"
-          alt="Logo"
-          class="h-10 w-auto"
-          width="260px"
-          height="70px"
-        />
+        <img src="./assets/images/Group 1.png" alt="Logo" class="img-fluid" />
       </div>
 
-      <!-- Toggler Button (Mobile) -->
-      <button
-        id="navbarToggler"
-        class="lg:hidden p-2 border border-gray-300 rounded-md focus:outline-none"
-        aria-label="Toggle navigation"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16m-7 6h7"
-          ></path>
-        </svg>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks">
+        <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Navbar Links -->
-      <div
-        id="navbarLinks"
-        class="hidden lg:flex lg:items-center lg:space-x-6"
-      >
-        <ul class="flex flex-col lg:flex-row lg:space-x-6">
-          <li>
-            <a
-              href="/"
-              class="text-[#88b651] hover:text-gray-700 dropdown-item"
-              >Home</a
-            >
+      <div class="collapse navbar-collapse LinksAdj col-10" id="navbarLinks">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="#" style="color: #88b651">Home</a>
           </li>
-          <li>
-            <a href="#" class="hover:text-gray-700 dropdown-item">Our Team</a>
+          <li class="nav-item"><a href="#">Our Team</a></li>
+          <li class="nav-item"><a href="#">JSDC News</a></li>
+          <li class="nav-item"><a href="#">Heriracy</a></li>
+          <li class="nav-item"><a href="/crm.html">JSDC CRM</a></li>
+          <li class="nav-item">
+            <a href="#">Help center</a>
           </li>
-          <li>
-            <a href="#" class="hover:text-gray-700 dropdown-item"
-              >JSDC News</a
-            >
-          </li>
-          <li>
-            <a href="#" class="hover:text-gray-700 dropdown-item">Heriracy</a>
-          </li>
-          <li>
-            <a href="../crm.html" class="hover:text-gray-700 dropdown-item"
-              >JSDC CRM</a
-            >
-          </li>
-          <li>
-            <a href="#" class="hover:text-gray-700 dropdown-item"
-              >Help Center</a
-            >
-          </li>
-          <li>
-            <a href="#" class="hover:text-gray-700 dropdown-item">Events</a>
-          </li>
-          <li>
-            <a href="#" class="hover:text-gray-700 dropdown-item"
-              >Internal Portal</a
-            >
+          <li class="nav-item"><a href="#">Events</a></li>
+          <li class="nav-item">
+            <a href="#">Internal portal</a>
           </li>
         </ul>
-
-        <!-- Profile Dropdown -->
-        <li class="relative d-flex justify-content-center">
-          <!-- Dropdown Toggle Button -->
-          <button
-            id="dropdownToggle"
-            class="flex items-center space-x-2 focus:outline-none"
-          >
-            <img
-              src="../assets/images/Ellipse 1.png"
-              alt="pp"
-              class="w-8 h-8 rounded-full"
-            />
-            <span class="dropdown-item">Aasker</span>
-            <svg
-              class="w-4 h-4 dropdown-item"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
-          </button>
-
-          <!-- Dropdown Menu -->
-          <ul
-            id="dropdownMenu"
-            class="absolute mt-2 min-w-[fit-content] w-48 bg-white shadow-lg rounded-lg hidden"
-          >
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="./assets/images/Ellipse 1.png" alt="pp" width="30px" height="30px" srcset="" />
+            Aasker
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
             <li>
-              <a
-                href="#"
-                class
-      ="block px-4 py-2 hover:bg-gray-100  text-black"
-
-                >Action</a
-              >
+              <hr class="dropdown-divider" />
             </li>
             <li>
-              <a
-                href="#"
-                class
-      ="block px-4 py-2 hover:bg-gray-100  text-black"
-
-                >Another action</a
-              >
-            </li>
-            <li>
-              <hr class="border-t my-1" />
-            </li>
-            <li>
-              <a
-                href="#"
-                class
-      ="block px-4 py-2 hover:bg-gray-100  text-black"
-
-                >Something else here</a
-              >
+              <a class="dropdown-item" href="#">Something else here</a>
             </li>
           </ul>
         </li>
       </div>
     </div>
   </nav>
-  <div class="h-[333px] flex items-center relative bg-center rounded-[0_0_60px_60px] bg-cover"
-    style="background-image: url('./assets/images/bgHero.png')">
+  <header class="h-[333px] flex items-center relative bg-center rounded-[0_0_60px_60px] bg-cover"
+    style="background-image: url('./assets/images/bgHero.png')" role="banner" aria-label="CRM header">
     <div class="absolute top-0 left-0 w-full h-full rounded-[0_0_60px_60px]" style="
-          background: linear-gradient(
-            180deg,
-            rgb(28 107 165 / 70%) 0%,
-            rgb(103 150 222 / 69%) 50%
-          );
-        "></div>
-    <img class="absolute bottom-[-104px] right-0" src="./assets/images/bgHero2.svg" />
+        background: linear-gradient(
+          180deg,
+          rgba(28, 107, 165, 0.7) 0%,
+          rgba(103, 150, 222, 0.69) 50%
+        );
+      " aria-hidden="true"></div>
+    <img class="absolute bottom-[-104px] right-0" src="./assets/images/bgHero2.svg" alt="" aria-hidden="true" />
     <div class="container z-10">
-      <h1 class="text-[32px] text-[#fff] font-bold">Crm</h1>
+      <h1 class="text-[32px] text-[#fff] font-bold">CRM</h1>
       <h2 class="text-[20px] font-bold text-white">
         home/<span class="text-[#CAE0F0]"> crm</span>
       </h2>
     </div>
-  </div>
+  </header>
+
   <main class="container">
-    <ul class="flex max-[1030px]:flex-col w-full mt-[81px] mb-[36px] gap-[24px]" id="crmTabs">
-      <!-- coustomer Tab -->
-      <li
-        class="flex flex-grow rounded-[15px] relative text-[#0D0D0C] custom-tab items-center bg-white cursor-pointer p-3 border border-transparent active-tab"
-        data-tab="coustomer">
+    <ul class="flex max-[1030px]:flex-col w-full mt-[81px] mb-[36px] gap-[24px]" id="crmTabs" role="tablist">
+      <!-- Customer Tab -->
+      <li role="tab" aria-selected="true" tabindex="0"
+        class="flex flex-grow rounded-[15px] relative text-[#0D0D0C] custom-tab justify-start items-center bg-white cursor-pointer p-3 border border-transparent active-tab"
+        data-tab="coustomer" aria-controls="coustomer-panel">
         <div
-          class="triangle max-[1030px]:hidden absolute bottom-[-22px] right-[42%] h-[24px] w-[34px] bg-transparent after:content-[''] after:absolute after:z-10 after:top-[-8px] after:w-[34px] after:h-[10px] after:bg-white">
+          class="triangle max-[1030px]:hidden absolute bottom-[-22px] right-[42%] h-[24px] w-[34px] bg-transparent after:content-[''] after:absolute after:z-10 after:top-[-8px] after:w-[34px] after:h-[10px] after:bg-white"
+          aria-hidden="true">
           <div class="absolute inset-0 bg-[#559bd0] z-[5]" style="clip-path: polygon(48% 100%, 0 0, 100% 0)"></div>
           <div class="absolute inset-[2px] bg-white z-10" style="clip-path: polygon(48% 100%, 0 0, 100% 0)"></div>
         </div>
-        <img src="./assets/images/customers.svg" alt="coustomer" />
-        <p class="font-[600] text-[24px]">coustomer</p>
+        <img src="./assets/images/customers.svg" alt="Customer" />
+        <p class="font-[600] text-[24px]">Customer</p>
       </li>
 
-      <!-- lead Tab -->
-      <li
-        class="flex flex-grow rounded-[15px] relative text-[#0D0D0C] custom-tab items-center bg-white cursor-pointer p-3 border border-transparent"
-        data-tab="lead">
+      <!-- Lead Tab -->
+      <li role="tab" aria-selected="false" tabindex="-1"
+        class="flex flex-grow rounded-[15px] relative text-[#0D0D0C] custom-tab justify-start items-center bg-white cursor-pointer p-3 border border-transparent"
+        data-tab="lead" aria-controls="lead-panel">
         <div
-          class="triangle max-[1030px]:hidden absolute bottom-[-22px] right-[42%] h-[24px] w-[34px] bg-transparent after:content-[''] after:absolute after:z-10 after:top-[-8px] after:w-[34px] after:h-[10px] after:bg-white">
+          class="triangle max-[1030px]:hidden absolute bottom-[-22px] right-[42%] h-[24px] w-[34px] bg-transparent after:content-[''] after:absolute after:z-10 after:top-[-8px] after:w-[34px] after:h-[10px] after:bg-white"
+          aria-hidden="true">
           <div class="absolute inset-0 bg-[#559bd0] z-[5]" style="clip-path: polygon(48% 100%, 0 0, 100% 0)"></div>
           <div class="absolute inset-[2px] bg-white z-10" style="clip-path: polygon(48% 100%, 0 0, 100% 0)"></div>
         </div>
-        <img src="./assets/images/leads.svg" alt="lead" />
-        <p class="font-[600] text-[24px]">lead</p>
+        <img src="./assets/images/leads.svg" alt="Lead" />
+        <p class="font-[600] text-[24px]">Lead</p>
       </li>
 
-      <!-- opportunities Tab -->
-      <li
-        class="flex flex-grow rounded-[15px] relative text-[#0D0D0C] custom-tab items-center bg-white cursor-pointer p-3 border border-transparent"
-        data-tab="opportunities">
+      <!-- Opportunities Tab -->
+      <li role="tab" aria-selected="false" tabindex="-1"
+        class="flex flex-grow rounded-[15px] relative text-[#0D0D0C] custom-tab justify-start items-center bg-white cursor-pointer p-3 border border-transparent"
+        data-tab="opportunities" aria-controls="opportunities-panel">
         <div
-          class="triangle max-[1030px]:hidden absolute bottom-[-22px] right-[42%] h-[24px] w-[34px] bg-transparent after:content-[''] after:absolute after:z-10 after:top-[-8px] after:w-[34px] after:h-[10px] after:bg-white">
+          class="triangle max-[1030px]:hidden absolute bottom-[-22px] right-[42%] h-[24px] w-[34px] bg-transparent after:content-[''] after:absolute after:z-10 after:top-[-8px] after:w-[34px] after:h-[10px] after:bg-white"
+          aria-hidden="true">
           <div class="absolute inset-0 bg-[#559bd0] z-[5]" style="clip-path: polygon(48% 100%, 0 0, 100% 0)"></div>
           <div class="absolute inset-[2px] bg-white z-10" style="clip-path: polygon(48% 100%, 0 0, 100% 0)"></div>
         </div>
-        <img src="./assets/images/opportunities.svg" alt="opportunities" />
-        <p class="font-[600] text-[24px]">opportunities</p>
+        <img src="./assets/images/opportunities.svg" alt="Opportunities" />
+        <p class="font-[600] text-[24px]">Opportunities</p>
       </li>
     </ul>
 
@@ -606,10 +354,7 @@
                     </svg>
                   </label>
                 </div>
-
-                <!-- Error Message -->
                 <p id="errorMsg" class="mt-2 text-sm text-red-500 min-h-[18px]"></p>
-
                 <!-- Popup Buttons -->
                 <div class="mt-4 flex w-full gap-[17px]">
                   <button id="btnSaveSend"
@@ -622,10 +367,8 @@
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
-
           <div class="flex gap-3 items-center p-3 border border-[#E6F0F8] rounded-[12px] mt-6 ml-auto w-fit px-6">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_314_994)">
@@ -639,16 +382,16 @@
                 </clipPath>
               </defs>
             </svg>
-
             <input placeholder="search" class="border-0 text-[#CAE0F0] placeholder:text-[#CAE0F0]">
           </div>
           <div class="overflow-x-auto">
-            <table id="coustomer-table" class="min-w-[966px]">
+            <table id="coustomer-table" class="min-w-[966px] border-separate border-spacing-0">
               <thead class="py-6 bg-[#EEF5FA] w-full">
                 <th style="width: 50px">
-                  <label class="custom-checkbox">
-                    <input type="checkbox" id="coustomer-select-all" />
-                    <span class="checkmark"></span>
+                  <label class="custom-checkbox inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="coustomer-select-all" class="hidden" />
+                    <span
+                      class="checkmark w-[24px] h-[24px] bg-[#eef5fa] border-2 border-[#cae0f0] rounded-[4px] transition-colors duration-300 relative"></span>
                   </label>
                 </th>
                 <th class="sortable gap-2 items-center w-[250px]" data-column="name">
@@ -735,8 +478,6 @@
                 width="100%" height="100%" />
             </button>
           </div>
-
-
         </div>
         <!-- Bottom Navigation -->
         <div class="flex justify-between items-center mb-[50px]">
@@ -763,14 +504,14 @@
           </div>
         </div>
       </div>
-
       <!-- lead Tab -->
       <div id="lead" class="tab-content hidden">
         <div class="bg-white p-8 rounded-[15px] mb-[40px]">
           <div class="flex justify-between flex-wrap items-center">
             <h3 class="text-[24px] font-[600] text-black mb-6">lead</h3>
             <div class="gap-6 flex flex-wrap">
-              <a href="/create-lead.html" class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
+              <a href="/create-lead.html"
+                class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
                 New Lead
               </a>
             </div>
@@ -795,9 +536,10 @@
             <table id="lead-table" class="min-w-[1000px]">
               <thead class="py-6 bg-[#EEF5FA] w-full">
                 <th style="width: 50px">
-                  <label class="custom-checkbox">
-                    <input type="checkbox" id="lead-select-all" />
-                    <span class="checkmark"></span>
+                  <label class="custom-checkbox inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="lead-select-all" hidden />
+                    <span
+                      class="checkmark w-[24px] h-[24px] bg-[#eef5fa] border-2 border-[#cae0f0] rounded-[4px] transition-colors duration-300 relative"></span>
                   </label>
                 </th>
                 <th class="sortable gap-2 items-center w-[250px]" data-column="name">
@@ -952,9 +694,10 @@
           <div class="flex justify-between flex-wrap items-center">
             <h3 class="text-[24px] font-[600] text-black mb-6">opportunities</h3>
             <div class="gap-6 flex flex-wrap">
-              <button class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
+              <a href="./create-opportunities.html"
+                class="bg-[#559BD0] font-[700] text-white px-10 border border-[#559BD0] py-2 rounded-[8px]">
                 New opportunities
-              </button>
+              </a>
             </div>
           </div>
           <!-- Search Input -->
@@ -980,9 +723,10 @@
               <thead class="py-6 bg-[#EEF5FA] w-full">
                 <tr>
                   <th style="width: 50px">
-                    <label class="custom-checkbox">
-                      <input type="checkbox" id="opportunities-select-all" />
-                      <span class="checkmark"></span>
+                    <label class="custom-checkbox inline-flex items-center cursor-pointer">
+                      <input type="checkbox" hidden id="opportunities-select-all" />
+                      <span
+                        class="checkmark w-[24px] h-[24px] bg-[#eef5fa] border-2 border-[#cae0f0] rounded-[4px] transition-colors duration-300 relative"></span>
                     </label>
                   </th>
                   <th class="sortable gap-2 items-center w-[250px]" data-column="lead">
@@ -1085,7 +829,7 @@
           </div>
         </div>
       </div>
-
+    </div>
 
 
   </main>
@@ -1228,150 +972,7 @@
         type: "Basic",
         selected: false,
       },
-      {
-        id: 3,
-        name: "John Doe",
-        "last-name": "Doeson",
-        email: "john@example.com",
-        type: "Premium",
-        selected: false,
-      },
-      {
-        id: 4,
-        name: "Alice Brown",
-        "last-name": "Brownsworth",
-        email: "alice@example.com",
-        type: "Basic",
-        selected: false,
-      },
-      {
-        id: 5,
-        name: "Charlie Black",
-        "last-name": "Blackwood",
-        email: "charlie@example.com",
-        type: "VIP",
-        selected: false,
-      },
-      {
-        id: 6,
-        name: "Emma White",
-        "last-name": "Whitestone",
-        email: "emma@example.com",
-        type: "Premium",
-        selected: false,
-      },
-      {
-        id: 7,
-        name: "David Green",
-        "last-name": "Greenfield",
-        email: "david@example.com",
-        type: "Basic",
-        selected: false,
-      },
-      {
-        id: 8,
-        name: "Sophia Blue",
-        "last-name": "Bluebell",
-        email: "sophia@example.com",
-        type: "VIP",
-        selected: false,
-      },
-      {
-        id: 9,
-        name: "James Red",
-        "last-name": "Redmond",
-        email: "james@example.com",
-        type: "Premium",
-        selected: false,
-      },
-      {
-        id: 10,
-        name: "Olivia Gold",
-        "last-name": "Goldsmith",
-        email: "olivia@example.com",
-        type: "Basic",
-        selected: false,
-      },
-      {
-        id: 11,
-        name: "Henry Silver",
-        "last-name": "Silverman",
-        email: "henry@example.com",
-        type: "VIP",
-        selected: false,
-      },
-      {
-        id: 12,
-        name: "Lucas Gray",
-        "last-name": "Graystone",
-        email: "lucas@example.com",
-        type: "Premium",
-        selected: false,
-      },
-      {
-        id: 13,
-        name: "Mia Rose",
-        "last-name": "Rosewood",
-        email: "mia@example.com",
-        type: "Basic",
-        selected: false,
-      },
-      {
-        id: 14,
-        name: "Benjamin Violet",
-        "last-name": "Violetsky",
-        email: "benjamin@example.com",
-        type: "VIP",
-        selected: false,
-      },
-      {
-        id: 15,
-        name: "Liam Brown",
-        "last-name": "Brownington",
-        email: "liam@example.com",
-        type: "Premium",
-        selected: false,
-      },
-      {
-        id: 16,
-        name: "Ava Cyan",
-        "last-name": "Cyanberg",
-        email: "ava@example.com",
-        type: "Basic",
-        selected: false,
-      },
-      {
-        id: 17,
-        name: "Noah Indigo",
-        "last-name": "Indigoworth",
-        email: "noah@example.com",
-        type: "VIP",
-        selected: false,
-      },
-      {
-        id: 18,
-        name: "Ethan Teal",
-        "last-name": "Tealman",
-        email: "ethan@example.com",
-        type: "Premium",
-        selected: false,
-      },
-      {
-        id: 19,
-        name: "Isabella Aqua",
-        "last-name": "Aqualina",
-        email: "isabella@example.com",
-        type: "Basic",
-        selected: false,
-      },
-      {
-        id: 20,
-        name: "Mason Navy",
-        "last-name": "Navyton",
-        email: "mason@example.com",
-        type: "VIP",
-        selected: false,
-      },
+    
     ];
 
 
@@ -1390,132 +991,7 @@
         stage: "Proposal",
         selected: false,
       },
-      {
-        id: 103,
-        lead: "Mark",
-        "assign-to": "Omar Al-Farsi",
-        stage: "Closed Won",
-        selected: false,
-      },
-      {
-        id: 104,
-        lead: "Sophia",
-        "assign-to": "Layla Aoun",
-        stage: "Qualification",
-        selected: false,
-      },
-      {
-        id: 105,
-        lead: "David",
-        "assign-to": "Youssef Karami",
-        stage: "Negotiation",
-        selected: false,
-      },
-      {
-        id: 106,
-        lead: "Olivia",
-        "assign-to": "Hani Mansour",
-        stage: "Prospecting",
-        selected: false,
-      },
-      {
-        id: 107,
-        lead: "Noah",
-        "assign-to": "Farah Said",
-        stage: "Proposal",
-        selected: false,
-      },
-      {
-        id: 108,
-        lead: "Emma",
-        "assign-to": "Jalal Nassar",
-        stage: "Closed Lost",
-        selected: false,
-      },
-      {
-        id: 109,
-        lead: "Lucas",
-        "assign-to": "Rami Kamel",
-        stage: "Negotiation",
-        selected: false,
-      },
-      {
-        id: 110,
-        lead: "Mia",
-        "assign-to": "Salim Daher",
-        stage: "Qualification",
-        selected: false,
-      },
-      {
-        id: 111,
-        lead: "Benjamin",
-        "assign-to": "Kareem Badawi",
-        stage: "Prospecting",
-        selected: false,
-      },
-      {
-        id: 112,
-        lead: "Ava",
-        "assign-to": "Nadine Fakhoury",
-        stage: "Proposal",
-        selected: false,
-      },
-      {
-        id: 113,
-        lead: "Ethan",
-        "assign-to": "Ahmed Reda",
-        stage: "Negotiation",
-        selected: false,
-      },
-      {
-        id: 114,
-        lead: "Isabella",
-        "assign-to": "Tariq Wahbi",
-        stage: "Closed Won",
-        selected: false,
-      },
-      {
-        id: 115,
-        lead: "Mason",
-        "assign-to": "Layth Zain",
-        stage: "Prospecting",
-        selected: false,
-      },
-      {
-        id: 116,
-        lead: "Liam",
-        "assign-to": "Rania Khalil",
-        stage: "Qualification",
-        selected: false,
-      },
-      {
-        id: 117,
-        lead: "Charlotte",
-        "assign-to": "Omar Shami",
-        stage: "Proposal",
-        selected: false,
-      },
-      {
-        id: 118,
-        lead: "Elijah",
-        "assign-to": "Bassam Al-Fayez",
-        stage: "Closed Lost",
-        selected: false,
-      },
-      {
-        id: 119,
-        lead: "Amelia",
-        "assign-to": "Faris Hamdan",
-        stage: "Negotiation",
-        selected: false,
-      },
-      {
-        id: 120,
-        lead: "Alexander",
-        "assign-to": "Nada Rashed",
-        stage: "Prospecting",
-        selected: false,
-      },
+     
     ];
 
     const lead = [
@@ -1535,168 +1011,6 @@
         coustomer: "alice",
         status: "contacted",
         "assign-to": "Sami Haddad",
-        selected: false,
-      },
-      {
-        id: 103,
-        name: "Mark",
-        source: "Trade show event",
-        coustomer: "mark",
-        status: "qualified",
-        "assign-to": "Omar Al-Farsi",
-        selected: false,
-      },
-      {
-        id: 104,
-        name: "Sophia",
-        source: "Social media outreach",
-        coustomer: "sophia",
-        status: "new",
-        "assign-to": "Layla Aoun",
-        selected: false,
-      },
-      {
-        id: 105,
-        name: "David",
-        source: "Referral from existing coustomer",
-        coustomer: "david",
-        status: "contacted",
-        "assign-to": "Youssef Karami",
-        selected: false,
-      },
-      {
-        id: 106,
-        name: "Olivia",
-        source: "Cold email campaign",
-        coustomer: "olivia",
-        status: "qualified",
-        "assign-to": "Hani Mansour",
-        selected: false,
-      },
-      {
-        id: 107,
-        name: "Noah",
-        source: "Website form submission",
-        coustomer: "noah",
-        status: "new",
-        "assign-to": "Farah Said",
-        selected: false,
-      },
-      {
-        id: 108,
-        name: "Emma",
-        source: "Online advertisement",
-        coustomer: "emma",
-        status: "contacted",
-        "assign-to": "Jalal Nassar",
-        selected: false,
-      },
-      {
-        id: 109,
-        name: "Lucas",
-        source: "Phone inquiry",
-        coustomer: "lucas",
-        status: "qualified",
-        "assign-to": "Rami Kamel",
-        selected: false,
-      },
-      {
-        id: 110,
-        name: "Mia",
-        source: "coustomer support inquiry",
-        coustomer: "mia",
-        status: "new",
-        "assign-to": "Salim Daher",
-        selected: false,
-      },
-      {
-        id: 111,
-        name: "Benjamin",
-        source: "Industry networking event",
-        coustomer: "benjamin",
-        status: "contacted",
-        "assign-to": "Kareem Badawi",
-        selected: false,
-      },
-      {
-        id: 112,
-        name: "Ava",
-        source: "Company website chat",
-        coustomer: "ava",
-        status: "qualified",
-        "assign-to": "Nadine Fakhoury",
-        selected: false,
-      },
-      {
-        id: 113,
-        name: "Ethan",
-        source: "Email newsletter subscription",
-        coustomer: "ethan",
-        status: "new",
-        "assign-to": "Ahmed Reda",
-        selected: false,
-      },
-      {
-        id: 114,
-        name: "Isabella",
-        source: "Business partnership inquiry",
-        coustomer: "isabella",
-        status: "contacted",
-        "assign-to": "Tariq Wahbi",
-        selected: false,
-      },
-      {
-        id: 115,
-        name: "Mason",
-        source: "Google search",
-        coustomer: "mason",
-        status: "qualified",
-        "assign-to": "Layth Zain",
-        selected: false,
-      },
-      {
-        id: 116,
-        name: "Liam",
-        source: "coustomer referral",
-        coustomer: "liam",
-        status: "new",
-        "assign-to": "Rania Khalil",
-        selected: false,
-      },
-      {
-        id: 117,
-        name: "Charlotte",
-        source: "Product demo request",
-        coustomer: "charlotte",
-        status: "contacted",
-        "assign-to": "Omar Shami",
-        selected: false,
-      },
-      {
-        id: 118,
-        name: "Elijah",
-        source: "Live webinar",
-        coustomer: "elijah",
-        status: "qualified",
-        "assign-to": "Bassam Al-Fayez",
-        selected: false,
-      },
-      {
-        id: 119,
-        name: "Amelia",
-        source: "Local business expo",
-        coustomer: "amelia",
-        status: "new",
-        "assign-to": "Faris Hamdan",
-        selected: false,
-      },
-      {
-        id: 120,
-        name: "Alexander",
-        source: "LinkedIn outreach",
-        coustomer: "alexander",
-        status: "contacted",
-        "assign-to": "Nada Rashed",
         selected: false,
       },
     ];
@@ -1745,16 +1059,17 @@
           // Checkbox column
           const checkboxCell = document.createElement("td");
           const label = document.createElement("label");
-          label.className = "custom-checkbox";
+          label.className = "custom-checkbox inline-flex items-center cursor-pointer";
           const input = document.createElement("input");
           input.type = "checkbox";
+          input.className = "hidden";
           input.checked = item.selected;
           input.addEventListener("change", function () {
             data[startIndex + i].selected = this.checked;
             updateSelectAllCheckbox();
           });
           const span = document.createElement("span");
-          span.className = "checkmark";
+          span.className = "checkmark w-[24px] h-[24px] bg-[#eef5fa] border-2 border-[#cae0f0] rounded-[4px] transition-colors duration-300 relative";
           label.appendChild(input);
           label.appendChild(span);
           checkboxCell.appendChild(label);
@@ -1979,58 +1294,10 @@
     });
 
   </script>
-   <script>
-    // Toggle Navbar Links on Mobile
-    const navbarToggler = document.getElementById("navbarToggler");
-    const navbarLinks = document.getElementById("navbarLinks");
-
-    navbarToggler.addEventListener("click", () => {
-      navbarLinks.classList.toggle("hidden");
-      navbarLinks.classList.add("respdrop");
-      navbarLinks.classList.add("container");
-    });
-
-    // Toggle Profile Dropdown
-    const profileDropdownButton = document.getElementById(
-      "profileDropdownButton"
-    );
-    const profileDropdownMenu = document.getElementById(
-      "profileDropdownMenu"
-    );
-
-    profileDropdownButton.addEventListener("click", () => {
-      profileDropdownMenu.classList.toggle("open");
-    });
-
-    // Close Dropdown When Clicking Outside
-    document.addEventListener("click", (event) => {
-      if (!profileDropdownButton.contains(event.target)) {
-        profileDropdownMenu.classList.remove("open");
-      }
-    });
-  </script>
-  <script>
-    // Get the dropdown toggle button and menu
-    const dropdownToggle = document.getElementById("dropdownToggle");
-    const dropdownMenu = document.getElementById("dropdownMenu");
-
-    // Toggle dropdown visibility
-    dropdownToggle.addEventListener("click", () => {
-      dropdownMenu.classList.toggle("hidden");
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener("click", (event) => {
-      if (
-        !dropdownToggle.contains(event.target) &&
-        !dropdownMenu.contains(event.target)
-      ) {
-        dropdownMenu.classList.add("hidden");
-      }
-    });
-  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
 
 
 </body>
