@@ -728,12 +728,12 @@ li {
     font-size: 64px;
     line-height: 84px;
     color: #050504;
-    font-size: clamp(2rem, 7vw, 4rem);
+    font-size: clamp(1.5rem, 7vw, 4rem);
   }
 }
 .AnnuBoxes {
   position: relative;
-  padding: 10px; /* Optional: Adds some spacing */
+  padding: 0 !important; /* Optional: Adds some spacing */
   overflow: hidden;
 }
 
@@ -757,11 +757,54 @@ li {
   max-height: 100px; /* Adjust this value to fit content size */
 }
 .AnnuBoxes {
+  position: relative;
+  width: fit-content;
   img {
     max-width: 100%;
   }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../images/GradientImg.png) no-repeat center center;
+    z-index: 0;
+    padding: 10px;
+  }
+  &::before {
+    content: "";
+    width: 0%;
+    height: 0%;
+    top: 0;
+    right: 100%;
+    transform: translate(-50%, -50%) rotate(45deg); /* Rotate from above */
+    background: url(../images/massiveeffe.png) no-repeat center center;
+    position: absolute;
+    transition: transform 0.5s ease;
+    opacity: 0;
+  }
 
-  position: relative;
+  &:hover::after {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 60%,
+      #052a47 100%
+    );
+
+    border-radius: 24px;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    animation: rotateBox 4s linear infinite;
+    top: 10%;
+    width: 100%;
+    height: 100%;
+    transform: translate(0%, 0%) rotate(-10deg);
+    left: -20%;
+  }
   .AnnuDate {
     position: absolute;
     top: 3%;
@@ -773,24 +816,28 @@ li {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
+    z-index: 99;
   }
   .AnnuTitle {
     position: absolute;
     left: 5%;
     font-weight: 700;
-    font-size: 28px;
+    font-size: clamp(1rem, 2vw, 2rem);
     line-height: 120%;
     bottom: 5%;
+    z-index: 99;
   }
+
   span {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 20px;
     color: white;
-    margin-top: 5px;
+    margin-top: 1rem;
     padding: 0 0.5rem 0 0;
     text-decoration: none;
   }
 }
+
 .MainSubSi {
   h2 {
     font-weight: 700;
