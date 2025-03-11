@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opportunity Form - Update</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .skeleton {
+            background-color: #eee;
+            border-radius: 4px;
+            color: transparent;
+            pointer-events: none;
+            animation: skeleton-loading 1s linear infinite alternate;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        #Closuredate::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        #Closuredate::-moz-calendar-picker-indicator {
+            display: none;
+        }
+
+        .competitor-file-field:has(.error) .custom-file-container {
+            border: 1px solid red !important;
+        }
+
+        .custom-file-container+.error {
+            border: 1px solid red !important;
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .custom-alert.hidden {
+            display: none;
+        }
+
+        .custom-alert-message {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .custom-alert-close {
+            background: #48bb78;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .select-container {
+            position: relative;
+        }
+
+        select:focus~.floating-label-select,
+        select.float~.floating-label-select {
+            top: 2px;
+            font-size: 10px !important;
+            font-weight: 600;
+            color: #bbb6b0;
+        }
+
+        .select-container select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
+        }
+
+        .select-container::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 23px;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2210%22%20viewBox%3D%220%200%2016%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0.615384%201.87495L8.30769%209.56726L16%201.87495L14.9038%200.79803L8.30769%207.39418L1.71154%200.79803L0.615384%201.87495Z%22%20fill%3D%22black%22/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: 16px 10px;
+            transition: transform 0.3s;
+        }
+
+        .select-container.open::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* إخفاء أيقونات spinner الافتراضية في حقول الأرقام */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Floating label & error styles */
+        .floating-input {
+            display: block;
+            border: 1px solid #cae0f0;
+            border-radius: 12px;
+            padding: 1rem 0.625rem 0.2rem;
+            width: 100%;
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
+            appearance: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .floating-input:focus {
+            border-color: #2563eb;
+        }
+
+        .floating-input::placeholder {
+            color: transparent;
+        }
+
+        .floating-label,
+        .floating-label-select {
+            position: absolute;
+            left: 0.625rem;
+            top: 1rem;
+            font-size: 12px;
+            color: #bbb6b0;
+            pointer-events: none;
+            transition: transform 0.3s, color 0.3s;
+            transform-origin: 0;
+        }
+
+        .floating-input:focus~.floating-label,
+        .floating-input:not(:placeholder-shown)~.floating-label {
+            transform: translateY(-1rem) scale(0.75);
+            color: #bbb6b0;
+            font-weight: 600;
+        }
+
+        .select-container:focus-within~.floating-label-select,
+        .select-container.select-filled .floating-label-select {
+            top: 2px;
+            font-size: 10px !important;
+            font-weight: 600;
+            color: #bbb6b0;
+        }
+
+        .select-container:focus-within .floating-label-select {
+            color: #2563eb;
+        }
+
+        .error {
+            border: 1px solid red !important;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+
+        button[disabled] {
+            opacity: 0.6;
+        }
+
+        /* Drag & Drop file area style */
+        .file-drop-area {
+            margin-top: 1rem;
+            border: 2px dashed #3b82f6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background: #eef5fa;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .file-drop-area~.error {
+            border: 1px solid red;
+        }
+
+        .file-drop-area:hover {
+            background: #dbeafe;
+        }
+
+        .competitor-name,
+        .competitor-file {
+            width: 100%;
+        }
+
+        .custom-number-input {
+            position: relative;
+        }
+
+        .custom-number-input input[type="number"] {
+            padding-right: 2.5rem;
+        }
+
+        .number-controls {
+            position: absolute;
+            top: 0;
+            right: 8px;
+            height: 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .number-controls button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.2rem;
+        }
+
+        .number-controls button svg {
+            width: 12px;
+            height: 8px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#EEF5FA]">
+    <!-- Header Section -->
+    <div class="h-[333px] flex items-center relative bg-center rounded-b-[60px] bg-cover"
+        style="background-image: url('../assets/images/bgHero.png')">
+        <div class="absolute top-0 left-0 w-full h-full rounded-b-[60px]" style="
+            background: linear-gradient(
+              180deg,
+              rgba(28, 107, 165, 0.7) 0%,
+              rgba(103, 150, 222, 0.69) 50%
+            );
+          "></div>
+        <img class="absolute bottom-[-104px] right-0" src="../assets/images/bgHero2.svg" alt="Decorative" />
+        <div class="container relative z-10">
+            <h1 class="text-[32px] text-white font-bold">Crm</h1>
+            <h2 class="text-[20px] font-bold text-white">
+                home/<span class="text-[#CAE0F0]"> crm</span>
+            </h2>
+        </div>
+    </div>
+    <!-- Back Button -->
+    <div class="container my-14">
+        <a href="../crm.html" class="mr-auto flex items-center w-fit   gap-5 my-14">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_318_2435)">
+                    <path d="M22.5469 12H1.45312" stroke="#050504" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M11.2969 21.8438L1.45312 12L11.2969 2.15625" stroke="#050504" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+                <defs>
+                    <clipPath id="clip0_318_2435">
+                        <rect width="24" height="24" fill="white" transform="matrix(-1 0 0 1 24 0)" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <p class="text-[#4E4E4E] font-semibold text-2xl">back to srm</p>
+        </a>
+    </div>
+
+    <!-- Form Container -->
+    <div class="container bg-white p-6 rounded-2xl shadow mb-[30px]">
+        <div class="flex items-center justify-between flex-wrap">
+            <h1 class="text-2xl font-semibold text-[#0D0D0C]">Edit Opportunity</h1>
+            <div class="flex gap-6" id="customerBtns">
+
+                <button class="bg-[#ffaea9] text-white font-[600] p-[8px] rounded-[8px]">
+                    delete customer
+                </button>
+            </div>
+        </div>
+        <hr class="my-4" />
+        <form id="opportunityForm" class="space-y-6">
+            <!-- Fields Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Lead (Select) -->
+                <div class="select-container relative">
+                    <select id="lead"
+                        class="block w-full float skeleton rounded-lg floating-input text-base text-black border border-[#CAE0F0] focus:outline-none">
+                        <option value="" selected disabled hidden></option>
+                        <option value="lead1">Lead 1</option>
+                        <option value="lead2">Lead 2</option>
+                    </select>
+                    <label for="lead" class="floating-label-select">Lead</label>
+                    <div class="error-message" id="leadError">This field is required.</div>
+                </div>
+                <!-- Stage (Select) -->
+                <div class="select-container relative">
+                    <select id="stage"
+                        class="block w-full float skeleton rounded-lg floating-input text-base text-black border border-[#CAE0F0] focus:outline-none">
+                        <option value="" selected disabled hidden></option>
+                        <option value="stage1">Stage 1</option>
+                        <option value="stage2">Stage 2</option>
+                    </select>
+                    <label for="stage" class="floating-label-select">Stage</label>
+                    <div class="error-message" id="stageError">This field is required.</div>
+                </div>
+                <!-- Expected Value (Number) -->
+                <div class="relative custom-number-input">
+                    <input type="number" id="expectedValueNumber" placeholder=" "
+                        class="floating-input peer skeleton" />
+                    <div class="number-controls skeleton">
+                        <!-- Increase button-->
+                        <button type="button" class="number-increment">
+                            <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                style="transform: rotate(180deg);">
+                                <path
+                                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                                    fill="black" />
+                            </svg>
+                        </button>
+                        <!--Decrease button-->
+                        <button type="button" class="number-decrement">
+                            <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                                    fill="black" />
+                            </svg>
+                        </button>
+                    </div>
+                    <label for="expectedValueNumber" class="floating-label">
+                        Expected Value
+                    </label>
+                    <div class="error-message" id="expectedValueNumberError">
+                        This field is required.
+                    </div>
+                </div>
+                <!-- Expected Value (Text) -->
+                <div class="relative">
+                    <input type="text" id="ExpectedValueText" placeholder=" " class="floating-input peer skeleton" />
+                    <label for="ExpectedValueText" class="floating-label">
+                        Expected Value
+                    </label>
+                    <div class="error-message" id="ExpectedValueTextError">
+                        This field is required.
+                    </div>
+                </div>
+                <!-- status (Select) -->
+                <div class="select-container relative">
+                    <select id="status"
+                        class="block w-full float skeleton rounded-lg floating-input text-base text-black border border-[#CAE0F0] focus:outline-none">
+                        <option value="" selected disabled hidden></option>
+                        <option value="status1">status 1</option>
+                        <option value="status2">status 2</option>
+                    </select>
+                    <label for="status" class="floating-label-select">status</label>
+                    <div class="error-message" id="statusError">This field is required.</div>
+                </div>
+                <!-- Priority (Select) -->
+                <div class="select-container relative">
+                    <select id="Priority"
+                        class="block w-full float skeleton rounded-lg floating-input text-base text-black border border-[#CAE0F0] focus:outline-none">
+                        <option value="" selected disabled hidden></option>
+                        <option value="Priority1">Priority 1</option>
+                        <option value="Priority2">Priority 2</option>
+                    </select>
+                    <label for="Priority" class="floating-label-select">Priority</label>
+                    <div class="error-message" id="PriorityError">This field is required.</div>
+                </div>
+
+            </div>
+            <!-- Competitors Section (Dynamic Array) -->
+            <div id="competitorsSection" class="border border-[#E6F0F8] rounded-[16px] p-[24px_16px]" style="box-shadow: 5px 4px 12px 0px #00000014;
+">
+                <h2 class="text-xl font-semibold ">Competitors</h2>
+                <div id="competitorsContainer" class="py-4">
+                    <!-- One competitor field will be added on page load -->
+                </div>
+                <button type="button"
+                    class="border skeleton max-w-[300px] w-full border-[#559BD0] text-[#559BD0] text-[16px] font-[600] p-[8px] rounded-[8px] flex gap-3 justify-center items-center"
+                    onclick="addCompetitor()">
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.182617" width="24" height="24" rx="4" fill="#559BD0" />
+                        <path
+                            d="M17 11.1826H13V7.18262C13 6.9174 12.8946 6.66305 12.7071 6.47551C12.5196 6.28797 12.2652 6.18262 12 6.18262C11.7348 6.18262 11.4804 6.28797 11.2929 6.47551C11.1054 6.66305 11 6.9174 11 7.18262V11.1826H7C6.73478 11.1826 6.48043 11.288 6.29289 11.4755C6.10536 11.663 6 11.9174 6 12.1826C6 12.4478 6.10536 12.7022 6.29289 12.8897C6.48043 13.0773 6.73478 13.1826 7 13.1826H11V17.1826C11 17.4478 11.1054 17.7022 11.2929 17.8897C11.4804 18.0773 11.7348 18.1826 12 18.1826C12.2652 18.1826 12.5196 18.0773 12.7071 17.8897C12.8946 17.7022 13 17.4478 13 17.1826V13.1826H17C17.2652 13.1826 17.5196 13.0773 17.7071 12.8897C17.8946 12.7022 18 12.4478 18 12.1826C18 11.9174 17.8946 11.663 17.7071 11.4755C17.5196 11.288 17.2652 11.1826 17 11.1826Z"
+                            fill="white" />
+                    </svg>
+                    Add to Competitors
+                </button>
+
+            </div>
+            <!-- Rest fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Closure date -->
+                <div class="relative z-0 w-full mb-4 group skeleton">
+                    <input type="date" id="Closuredate" name="date" lang="en"
+                        class="block w-full text-[16px] text-[#0D0D0C] skeleton bg-transparent border border-[#CAE0F0] rounded-[12px] pt-[15px] pb-[8px] px-[16px] pr-[50px] appearance-none focus:outline-none focus:ring-0 focus:border-[#559BD0] peer"
+                        placeholder=" " />
+                    <span id="ClosuredateIcon"
+                        class="absolute inset-y-0 right-0 flex items-center  pr-[16px] pointer-events-none h-[55px]">
+                        <svg width="34" height="32" viewBox="0 0 34 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect y="0.5" width="34" height="31" rx="5" fill="#EEF5FA" />
+                            <g clip-path="url(#clip0_844_481)">
+                                <path
+                                    d="M11.5263 11.0244C11.2624 11.0244 11.0093 11.1293 10.8227 11.3159C10.6361 11.5025 10.5312 11.7556 10.5312 12.0195V21.4729C10.5312 21.7367 10.6361 21.9899 10.8227 22.1765C11.0093 22.3631 11.2624 22.4679 11.5263 22.4679H22.4723C22.7362 22.4679 22.9894 22.3631 23.1759 22.1765C23.3625 21.9899 23.4674 21.7367 23.4674 21.4729V12.0195C23.4674 11.7556 23.3625 11.5025 23.1759 11.3159C22.9894 11.1293 22.7362 11.0244 22.4723 11.0244H20.4821"
+                                    stroke="#559BD0" stroke-width="1.06875" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M13.5156 9.53174V12.517" stroke="#559BD0" stroke-width="1.06875"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M20.4824 9.53174V12.517" stroke="#559BD0" stroke-width="1.06875"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M11.375 11L20.75 11" stroke="#559BD0" stroke-width="1.06875"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M19.4872 16.9951H14.5117" stroke="#559BD0" stroke-width="1.06875"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M17 14.5073V19.4828" stroke="#559BD0" stroke-width="1.06875"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_844_481">
+                                    <rect width="15" height="15" fill="white" transform="translate(9.5 8.5)" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </span>
+                    <label for="Closuredate"
+                        class="absolute duration-300 transform -translate-y-2 left-[16px] font-[600] top-3 -z-10 origin-[0] text-[12px] text-[#BBB6B0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-[16px] peer-focus:-translate-y-2 peer-focus:text-[12px] peer-focus:font-[600]">
+                        Closure date
+                    </label>
+                    <div class="error-message" id="ClosuredateError">
+                        This field is required.
+                    </div>
+                </div>
+                <!-- Actual Value (Number)  -->
+                <div class="relative custom-number-input">
+                    <input type="number" id="actualValue" placeholder=" " class="floating-input peer skeleton" />
+                    <div class="number-controls">
+                        <button type="button" class="number-increment">
+                            <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                style="transform: rotate(180deg);">
+                                <path
+                                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                                    fill="black" />
+                            </svg>
+                        </button>
+                        <button type="button" class="number-decrement">
+                            <svg viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M0.615384 1.87495L8.30769 9.56726L16 1.87495L14.9038 0.79803L8.30769 7.39418L1.71154 0.79803L0.615384 1.87495Z"
+                                    fill="black" />
+                            </svg>
+                        </button>
+                    </div>
+                    <label for="actualValue" class="floating-label">
+                        Actual Value
+                    </label>
+                    <div class="error-message" id="actualValueError">
+                        This field is required.
+                    </div>
+                </div>
+                <!-- Loss Reason (Text) -->
+                <div class="relative">
+                    <input type="text" id="lossReason" placeholder=" " class="floating-input peer skeleton" />
+                    <label for="lossReason" class="floating-label">
+                        Loss Reason
+                    </label>
+                    <div class="error-message" id="lossReasonError">
+                        This field is required.
+                    </div>
+                </div>
+                <!-- Assigned To (Select) -->
+                <div class="select-container relative">
+                    <select id="assignedTo"
+                        class="block w-full skeleton float rounded-lg floating-input text-base text-black border border-[#CAE0F0] focus:outline-none">
+                        <option value="" selected disabled hidden></option>
+                        <option value="user1">User 1</option>
+                        <option value="user2">User 2</option>
+                    </select>
+                    <label for="assignedTo" class="floating-label-select">
+                        Assigned To
+                    </label>
+                    <div class="error-message" id="assignedToError">
+                        This field is required.
+                    </div>
+                </div>
+            </div>
+            <!-- File Upload: Drag & Drop -->
+            <div>
+                <div id="fileDropAreaOpportunity" class="file-drop-area skeleton">
+                    <input type="file" id="opportunityFile" class="hidden skeleton" />
+                    <div class="flex flex-col justify-center items-center gap-4">
+                        <span class="text-[#559BD0] font-bold text-xl" id="fileInputLabelOpportunity">
+                            Drag & Drop your file or Browse
+                        </span>
+                        <div id="fileDropAreaImageOpportunity">
+                            <svg width="103" height="102" viewBox="0 0 103 102" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g opacity="0.2">
+                                    <g clip-path="url(#clip0_318_2422)">
+                                        <path
+                                            d="M81.0829 0.182739H21.4211C15.772 0.189455 10.3562 2.41947 6.36167 6.38363C2.36714 10.3478 0.120048 15.7224 0.113281 21.3286L0.113281 80.5369C0.120048 86.1431 2.36714 91.5177 6.36167 95.4818C10.3562 99.446 15.772 101.676 21.4211 101.683H81.0829C86.732 101.676 92.1478 99.446 96.1423 95.4818C100.137 91.5177 102.384 86.1431 102.391 80.5369V21.3286C102.384 15.7224 100.137 10.3478 96.1423 6.38363C92.1478 2.41947 86.732 0.189455 81.0829 0.182739V0.182739ZM21.4211 8.64107H81.0829C84.4736 8.64107 87.7255 9.97779 90.1231 12.3572C92.5207 14.7365 93.8676 17.9636 93.8676 21.3286V80.5369C93.8603 82.4209 93.4232 84.2789 92.5891 85.9714L53.5405 47.2195C51.5618 45.2554 49.2126 43.6973 46.627 42.6343C44.0415 41.5712 41.2702 41.0241 38.4716 41.0241C35.6729 41.0241 32.9017 41.5712 30.3161 42.6343C27.7306 43.6973 25.3814 45.2554 23.4027 47.2195L8.6364 61.8694V21.3286C8.6364 17.9636 9.98336 14.7365 12.3809 12.3572C14.7785 9.97779 18.0304 8.64107 21.4211 8.64107ZM21.4211 93.2244C18.0304 93.2244 14.7785 91.8877 12.3809 89.5083C9.98336 87.129 8.6364 83.9018 8.6364 80.5369V73.8294L29.4243 53.1996C30.6116 52.0206 32.0213 51.0853 33.5729 50.4472C35.1246 49.8091 36.7877 49.4806 38.4673 49.4806C40.1469 49.4806 41.8101 49.8091 43.3617 50.4472C44.9133 51.0853 46.3231 52.0206 47.5104 53.1996L86.559 91.9557C84.8536 92.7834 82.9814 93.2171 81.0829 93.2244H21.4211Z"
+                                            fill="#374957" />
+                                        <path
+                                            d="M68.2983 44.5875C71.2483 44.5875 74.132 43.7193 76.5849 42.0929C79.0377 40.4664 80.9494 38.1546 82.0784 35.4499C83.2073 32.7452 83.5027 29.7689 82.9271 26.8976C82.3516 24.0263 80.9311 21.3888 78.8451 19.3187C76.7591 17.2486 74.1014 15.8388 71.2081 15.2677C68.3148 14.6966 65.3158 14.9897 62.5904 16.11C59.8649 17.2304 57.5355 19.1276 55.8965 21.5618C54.2576 23.996 53.3828 26.8578 53.3828 29.7854C53.3828 33.7111 54.9543 37.4761 57.7515 40.252C60.5486 43.028 64.3424 44.5875 68.2983 44.5875ZM68.2983 23.4416C69.5626 23.4416 70.7985 23.8137 71.8497 24.5107C72.9009 25.2078 73.7202 26.1986 74.204 27.3577C74.6878 28.5169 74.8144 29.7924 74.5678 31.023C74.3211 32.2535 73.7123 33.3839 72.8183 34.2711C71.9244 35.1583 70.7853 35.7624 69.5454 36.0072C68.3054 36.252 67.0201 36.1264 65.852 35.6462C64.684 35.1661 63.6856 34.353 62.9832 33.3098C62.2808 32.2665 61.9059 31.04 61.9059 29.7854C61.9059 28.1029 62.5794 26.4893 63.7782 25.2997C64.977 24.11 66.6029 23.4416 68.2983 23.4416Z"
+                                            fill="#374957" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_318_2422">
+                                        <rect width="102.277" height="101.5" fill="white"
+                                            transform="translate(0.113281 0.182739)" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <span id="currentFileNameSpanOpportunity" class="mt-2 block text-sm text-gray-700"></span>
+                <div class="error-message" id="opportunityFileError">
+                    This field is required.
+                </div>
+            </div>
+            <!-- Notes (Textarea) -->
+            <div class="relative">
+                <textarea id="notes" placeholder=" "
+                    class="block skeleton rounded-lg px-2.5 pb-2 pt-5 floating-input w-full text-base text-black border border-[#CAE0F0] peer h-32"></textarea>
+                <label for="notes" class="floating-label">Notes</label>
+                <div class="error-message" id="notesError">
+                    This field is required.
+                </div>
+            </div>
+            <!-- Details (Textarea) -->
+            <div class="relative">
+                <textarea id="details" placeholder=" "
+                    class="block skeleton rounded-lg px-2.5 pb-2 pt-5 floating-input w-full text-base text-black border border-[#CAE0F0] peer h-36"></textarea>
+                <label for="details" class="floating-label">Details</label>
+                <div class="error-message" id="detailsError">
+                    This field is required.
+                </div>
+            </div>
+            <!-- Submit Button -->
+            <div class="flex gap-3 w-full flex-wrap">
+                <button type="submit" id="submitButton"
+                    class="flex-grow skeleton bg-[#559BD0] text-white px-4 py-2 rounded-[8px] font-[700]">
+                    save changes
+                </button>
+
+                <a href="../crm.html?tab=opportunities"
+                    class="border-[#559BD0]  rounded-[8px] flex-grow text-[#559BD0] px-4 py-[8px] border text-center font-[700]">Cancel</a>
+            </div>
+
+        </form>
+        <p id="apiErrorOpportunity" class="mt-4 text-white bg-red-500 p-3 rounded-[10px] hidden"></p>
+
+    </div>
+    <!-- Custom Success Alert -->
+    <div id="customAlert" class="custom-alert  wow animate__animated animate__fadeInUp hidden">
+        <div
+            class="custom-alert-content bg-white p-5 flex rounded-lg text-center max-w-[400px] shadow-[0_2px_8px_rgba(0,0,0,0.3)] flex-col items-center">
+            <div
+                class="custom-alert-icon mb-[20px] text-[50px] rounded-full text-white bg-[#559BD0] text[#fff] w-[75px] h-[75px]">
+                &#10003;
+            </div>
+            <h2 class="text-xl font-bold mb-1">Opportunity Updated Successfully</h2>
+            <p class="text-base mb-4">Your form has been successfully submitted!</p>
+        </div>
+    </div>
+    <script>
+        const uploadAttachmentSvg = ` <svg width="34" height="32" viewBox="0 0 34 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect y="0.500122" width="34" height="31" rx="5" fill="#EEF5FA"/>
+              <g clip-path="url(#clip0_871_1514)">
+                <path d="M10.334 16.0002C10.334 12.8575 10.334 11.2861 11.3103 10.3098C12.2866 9.3335 13.858 9.3335 17.0007 9.3335C20.1433 9.3335 21.7147 9.3335 22.691 10.3098C23.6673 11.2861 23.6673 12.8575 23.6673 16.0002C23.6673 19.1428 23.6673 20.7142 22.691 21.6905C21.7147 22.6668 20.1433 22.6668 17.0007 22.6668C13.858 22.6668 12.2866 22.6668 11.3103 21.6905C10.334 20.7142 10.334 19.1428 10.334 16.0002Z" stroke="#559BD0" stroke-width="1.5"/>
+                <path d="M17 19.3335V14.6669M17 14.6669L19 16.6669M17 14.6669L15 16.6669" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19.6673 12.6669H14.334" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_871_1514">
+                  <rect width="16" height="16" fill="white" transform="translate(9 8.00012)"/>
+                </clipPath>
+              </defs>
+            </svg>`
+        const defaultSVG = `<svg width="103" height="102" viewBox="0 0 103 102" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.2">
+          <g clip-path="url(#clip0_318_2422)">
+            <path d="M81.0829 0.182739H21.4211C15.772 0.189455 10.3562 2.41947 6.36167 6.38363C2.36714 10.3478 0.120048 15.7224 0.113281 21.3286L0.113281 80.5369C0.120048 86.1431 2.36714 91.5177 6.36167 95.4818C10.3562 99.446 15.772 101.676 21.4211 101.683H81.0829C86.732 101.676 92.1478 99.446 96.1423 95.4818C100.137 91.5177 102.384 86.1431 102.391 80.5369V21.3286C102.384 15.7224 100.137 10.3478 96.1423 6.38363C92.1478 2.41947 86.732 0.189455 81.0829 0.182739V0.182739ZM21.4211 8.64107H81.0829C84.4736 8.64107 87.7255 9.97779 90.1231 12.3572C92.5207 14.7365 93.8676 17.9636 93.8676 21.3286V80.5369C93.8603 82.4209 93.4232 84.2789 92.5891 85.9714L53.5405 47.2195C51.5618 45.2554 49.2126 43.6973 46.627 42.6343C44.0415 41.5712 41.2702 41.0241 38.4716 41.0241C35.6729 41.0241 32.9017 41.5712 30.3161 42.6343C27.7306 43.6973 25.3814 45.2554 23.4027 47.2195L8.6364 61.8694V21.3286C8.6364 17.9636 9.98336 14.7365 12.3809 12.3572C14.7785 9.97779 18.0304 8.64107 21.4211 8.64107ZM21.4211 93.2244C18.0304 93.2244 14.7785 91.8877 12.3809 89.5083C9.98336 87.129 8.6364 83.9018 8.6364 80.5369V73.8294L29.4243 53.1996C30.6116 52.0206 32.0213 51.0853 33.5729 50.4472C35.1246 49.8091 36.7877 49.4806 38.4673 49.4806C40.1469 49.4806 41.8101 49.8091 43.3617 50.4472C44.9133 51.0853 46.3231 52.0206 47.5104 53.1996L86.559 91.9557C84.8536 92.7834 82.9814 93.2171 81.0829 93.2244H21.4211Z" fill="#374957"/>
+            <path d="M68.2983 44.5875C71.2483 44.5875 74.132 43.7193 76.5849 42.0929C79.0377 40.4664 80.9494 38.1546 82.0784 35.4499C83.2073 32.7452 83.5027 29.7689 82.9271 26.8976C82.3516 24.0263 80.9311 21.3888 78.8451 19.3187C76.7591 17.2486 74.1014 15.8388 71.2081 15.2677C68.3148 14.6966 65.3158 14.9897 62.5904 16.11C59.8649 17.2304 57.5355 19.1276 55.8965 21.5618C54.2576 23.996 53.3828 26.8578 53.3828 29.7854C53.3828 33.7111 54.9543 37.4761 57.7515 40.252C60.5486 43.028 64.3424 44.5875 68.2983 44.5875ZM68.2983 23.4416C69.5626 23.4416 70.7985 23.8137 71.8497 24.5107C72.9009 25.2078 73.7202 26.1986 74.204 27.3577C74.6878 28.5169 74.8144 29.7924 74.5678 31.023C74.3211 32.2535 73.7123 33.3839 72.8183 34.2711C71.9244 35.1583 70.7853 35.7624 69.5454 36.0072C68.3054 36.252 67.0201 36.1264 65.852 35.6462C64.684 35.1661 63.6856 34.353 62.9832 33.3098C62.2808 32.2665 61.9059 31.04 61.9059 29.7854C61.9059 28.1029 62.5794 26.4893 63.7782 25.2997C64.977 24.11 66.6029 23.4416 68.2983 23.4416Z" fill="#374957"/>
+          </g>
+        </g>
+        <defs><clipPath id="clip0_318_2422"><rect width="102.277" height="101.5" fill="white" transform="translate(0.113281 0.182739)"/></clipPath></defs>
+      </svg>`;
+        const pdfIconSVG = `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="15" fill="#E53E3E"/>
+        <text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial" font-weight="bold">PDF</text>
+      </svg>`;
+        const wordIconSVG = `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="15" fill="#2B6CB0"/>
+        <text x="50" y="60" text-anchor="middle" fill="white" font-size="30" font-family="Arial" font-weight="bold">WORD</text>
+      </svg>`;
+        // Global variables
+        const filedsOppertunity = [
+            "lead",
+            "stage",
+            "expectedValueNumber",
+            "ExpectedValueText",
+            "status",
+            "Priority",
+            "Closuredate",
+            "actualValue",
+            "lossReason",
+            "assignedTo",
+            "opportunityFile",
+            "notes",
+            "details"
+        ];
+        let originalData = {};
+        let clonedData = {};
+        let currentFileNameOpportunity = "";
+        let competitorCounter = 1;
+
+        // Dummy data fetch function
+        function fetchDummyData() {
+            const urlParams = new URLSearchParams(window.location.search);
+      const itemId = urlParams.get("id");
+      console.log("Fetching data for ID:", itemId);
+
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        "lead": "lead1",
+                        "stage": "stage1",
+                        "expectedValueNumber": 951,
+                        "ExpectedValueText": "Vero velit qui aut q",
+                        "status": "status2",
+                        "Priority": "Priority1",
+                        "Closuredate": "1988-05-02",
+                        "actualValue": 62,
+                        "lossReason": "Provident esse mol",
+                        "assignedTo": "user2",
+                        "opportunityFile": {
+                            "name": "icons8-arrow-50 (1).png",
+                            "lastModified": 1741283865812,
+                            "lastModifiedDate": "Thu Mar 06 2025 19:57:45 GMT+0200 (توقيت شرق أوروبا الرسمي)",
+                            "webkitRelativePath": "",
+                            "size": 252
+                        },
+                        "notes": "Facilis excepturi et",
+                        "details": "Sed voluptas provide",
+                        "competitors": [
+                            {
+                                "name": "Exercitationem itaqu",
+                                "file": {
+                                    "name": "JqueryColored.jpeg",
+                                    "lastModified": 1731329014738,
+                                    "lastModifiedDate": "Mon Nov 11 2024 14:43:34 GMT+0200 (توقيت شرق أوروبا الرسمي)",
+                                    "webkitRelativePath": ""
+                                }
+                            }
+                        ]
+                    });
+                }, 500);
+            });
+        }
+
+        // Populate form fields and initialize competitor data
+        function populateFormFields(data) {
+            document.getElementById("lead").value = data.lead;
+            document.getElementById("stage").value = data.stage;
+            document.getElementById("expectedValueNumber").value = data.expectedValueNumber;
+            document.getElementById("ExpectedValueText").value = data.ExpectedValueText;
+            document.getElementById("status").value = data.status;
+            document.getElementById("Priority").value = data.Priority;
+            document.getElementById("Closuredate").value = data.Closuredate;
+            document.getElementById("actualValue").value = data.actualValue;
+            document.getElementById("lossReason").value = data.lossReason;
+            document.getElementById("assignedTo").value = data.assignedTo;
+            document.getElementById("notes").value = data.notes;
+            document.getElementById("details").value = data.details;
+
+            if (data.opportunityFile && data.opportunityFile.name) {
+                currentFileNameOpportunity = data.opportunityFile.name;
+                fileInputLabelOpportunity.textContent = "Selected File: " + data.opportunityFile.name;
+                document.getElementById("fileDropAreaImageOpportunity").innerHTML = defaultSVG;
+            }
+
+            const compContainer = document.getElementById("competitorsContainer");
+            compContainer.innerHTML = "";
+            // Initialize competitors array from the loaded data
+            data.competitors.forEach((comp) => {
+                addCompetitor();
+                const competitorEntry = compContainer.lastElementChild;
+                competitorEntry.querySelector(".competitor-name").value = comp.name;
+                const customFileContainer = competitorEntry.querySelector(".custom-file-container");
+                if (customFileContainer) {
+                    customFileContainer.innerHTML = `<p>${comp.file.name}</p>${uploadAttachmentSvg}`;
+                }
+                updateCompetitorsData();
+            });
+
+            originalData = JSON.parse(JSON.stringify(data));
+            clonedData = JSON.parse(JSON.stringify(data));
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchDummyData().then(function (data) {
+                populateFormFields(data);
+                document.querySelectorAll('.skeleton').forEach(function (element) {
+                    element.classList.remove('skeleton');
+                });
+            });
+            // Handle custom date input
+            const dateInput = document.getElementById("Closuredate");
+            const customIcon = document.getElementById("ClosuredateIcon");
+            if (customIcon) {
+                customIcon.classList.remove("pointer-events-none");
+                customIcon.classList.add("cursor-pointer");
+                customIcon.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    if (dateInput.showPicker) {
+                        dateInput.showPicker();
+                    } else {
+                        dateInput.focus();
+                        dateInput.click();
+                    }
+                });
+            }
+        });
+
+        function showCustomAlert() {
+            document.getElementById("customAlert").classList.remove("hidden");
+        }
+        function hiddenCustomAlert() {
+            document.getElementById("customAlert").classList.add("hidden");
+        }
+
+        function sendOpportunityData(formData) {
+            console.log(Object.fromEntries(formData.entries()));
+
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const errorOccurs = Math.random() < 0.5;
+                    if (errorOccurs) {
+                        resolve({ error: "API Error: Unable to create opportunity." });
+                    } else {
+                        const changedData = {};
+                        for (let key in clonedData) {
+                            if (JSON.stringify(clonedData[key]) !== JSON.stringify(originalData[key])) {
+                                changedData[key] = clonedData[key];
+                            }
+                        }
+                        resolve({ success: true });
+                    }
+                }, 500);
+            });
+        }
+
+        function validateField(field) {
+            clonedData[field.id] = field.type === 'number' ? +field.value : field.value;
+            const errorDiv = document.getElementById(field.id + "Error");
+            let valid = true;
+            if (field.tagName.toLowerCase() === "select") {
+                valid = clonedData[field.id] !== "";
+            } else if (field.type === "file") {
+                if (field.files && field.files.length > 0) {
+                    const file = field.files[0];
+                    if (file.size > 2 * 1024 * 1024) {
+                        valid = false;
+                        if (errorDiv) errorDiv.innerText = "File must be less than 2MB.";
+                    } else if (!["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
+                        valid = false;
+                        if (errorDiv) errorDiv.innerText = "File must be a PDF or JPG/PNG.";
+                    } else {
+                        valid = true;
+                        if (errorDiv) errorDiv.innerText = "";
+                    }
+                } else {
+                    valid = currentFileNameOpportunity !== "";
+                    if (!valid && errorDiv)
+                        errorDiv.innerText = "This field is required.";
+                }
+            } else {
+                valid = typeof clonedData[field.id] === 'string'
+                    ? clonedData[field.id].trim() !== ""
+                    : clonedData[field.id] !== "";
+            }
+            if (valid) {
+                if (field.type === "file" && document.getElementById("fileDropAreaOpportunity")) {
+                    document.getElementById("fileDropAreaOpportunity").classList.remove("border-red-500");
+                }
+                field.classList.remove("error");
+                if (errorDiv) errorDiv.style.display = "none";
+            }
+            return valid;
+        }
+
+        function addValidationListener(field) {
+            if (field.tagName.toLowerCase() === "select" || field.type === "file" || field.type === "date") {
+                field.addEventListener("change", () => validateField(field));
+            } else {
+                field.addEventListener("input", () => validateField(field));
+            }
+        }
+
+        filedsOppertunity.forEach((id) => {
+            const field = document.getElementById(id);
+            if (field) addValidationListener(field);
+        });
+
+        document.querySelectorAll(".select-container select").forEach((select) => {
+            select.addEventListener("focus", function () {
+                this.parentElement.classList.add("open");
+            });
+            select.addEventListener("blur", function () {
+                this.parentElement.classList.remove("open");
+            });
+            select.addEventListener("change", function () {
+                if (this.value !== "") {
+                    this.classList.add("float");
+                } else {
+                    this.classList.remove("float");
+                }
+            });
+        });
+
+        const opportunityFileInput = document.getElementById("opportunityFile");
+        const fileDropAreaOpportunity = document.getElementById("fileDropAreaOpportunity");
+        const fileInputLabelOpportunity = document.getElementById("fileInputLabelOpportunity");
+
+        fileDropAreaOpportunity.addEventListener("click", () => opportunityFileInput.click());
+        fileDropAreaOpportunity.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            fileDropAreaOpportunity.classList.add("bg-blue-100");
+        });
+        fileDropAreaOpportunity.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            fileDropAreaOpportunity.classList.remove("bg-blue-100");
+        });
+        fileDropAreaOpportunity.addEventListener("drop", (e) => {
+            e.preventDefault();
+            fileDropAreaOpportunity.classList.remove("bg-blue-100");
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                opportunityFileInput.files = e.dataTransfer.files;
+                handleOpportunityFileChange();
+            }
+        });
+
+        opportunityFileInput.addEventListener("change", handleOpportunityFileChange);
+
+        function handleOpportunityFileChange() {
+            if (opportunityFileInput.files && opportunityFileInput.files.length > 0) {
+                const file = opportunityFileInput.files[0];
+                currentFileNameOpportunity = file.name;
+                fileInputLabelOpportunity.innerHTML = "Selected File: " + currentFileNameOpportunity;
+                if (file.type.startsWith("image/")) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById("fileDropAreaImageOpportunity").innerHTML =
+                            `<img src="${e.target.result}" alt="Image Preview" class="max-w-full max-h-48" />`;
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file.type === "application/pdf") {
+                    document.getElementById("fileDropAreaImageOpportunity").innerHTML = pdfIconSVG;
+                } else if (
+                    file.type === "application/msword" ||
+                    file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                ) {
+                    document.getElementById("fileDropAreaImageOpportunity").innerHTML = wordIconSVG;
+                } else {
+                    document.getElementById("fileDropAreaImageOpportunity").innerHTML = defaultSVG;
+                }
+            } else {
+                currentFileNameOpportunity = "";
+                fileInputLabelOpportunity.textContent = "Drag & Drop your file or Browse";
+                document.getElementById("fileDropAreaImageOpportunity").innerHTML = defaultSVG;
+            }
+            validateField(opportunityFileInput);
+        }
+
+        function updateCompetitorsData() {
+            const container = document.getElementById("competitorsContainer");
+            const remainingCompetitors = Array.from(container.children);
+            clonedData.competitors = remainingCompetitors.map((entry, index) => {
+                const nameInput = entry.querySelector(".competitor-name");
+                const fileInput = entry.querySelector(".competitor-file");
+                let fileData = {};
+                if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                    fileData = { name: fileInput.files[0].name };
+                } else if (
+                    clonedData.competitors &&
+                    clonedData.competitors[index] &&
+                    clonedData.competitors[index].file &&
+                    clonedData.competitors[index].file.name
+                ) {
+                    fileData = clonedData.competitors[index].file;
+                }
+                return {
+                    name: nameInput ? nameInput.value : "",
+                    file: fileData
+                };
+            });
+        }
+
+
+        // Add a competitor row (for new competitor rows)
+        function addCompetitor() {
+            const container = document.getElementById("competitorsContainer");
+            const competitorDiv = document.createElement("div");
+            competitorDiv.className = "competitor-entry grid grid-cols-1 md:grid-cols-3 gap-4 my-6 rounded";
+
+            // Create name field
+            const nameDiv = document.createElement("div");
+            nameDiv.className = "competitor-name-field relative";
+            if (container.children.length === 0) nameDiv.classList.add('skeleton');
+            const nameInput = document.createElement("input");
+            nameInput.type = "text";
+            nameInput.placeholder = " ";
+            nameInput.className = "floating-input peer competitor-name w-full";
+            const nameLabel = document.createElement("label");
+            nameLabel.innerText = "Competitor Name";
+            nameLabel.className = "floating-label";
+            if (container.children.length === 0) nameInput.classList.add('skeleton');
+            nameDiv.appendChild(nameInput);
+            nameDiv.appendChild(nameLabel);
+            const nameError = document.createElement("div");
+            nameError.className = "error-message";
+            nameError.innerText = "This field is required.";
+            nameDiv.appendChild(nameError);
+
+            nameInput.addEventListener("input", function () {
+                if (nameInput.value.trim() !== "") {
+                    nameInput.classList.remove("error");
+                    nameError.style.display = "none";
+                }
+                updateCompetitorsData();
+            });
+
+            // Create file field
+            const fileDiv = document.createElement("div");
+            fileDiv.className = "competitor-file-field";
+            const customFileContainer = document.createElement("div");
+            customFileContainer.className = "flex items-center custom-file-container justify-between cursor-pointer border border-[#CAE0F0] rounded-[12px] py-[4px] px-[8px] font-[500] text-[16px] text-[#0D0D0C]";
+            customFileContainer.innerHTML = `<p>upload attachments</p>
+         ${uploadAttachmentSvg}`;
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.className = "competitor-file hidden";
+            if (container.children.length === 0) fileInput.classList.add('skeleton');
+            if (container.children.length === 0) customFileContainer.classList.add('skeleton');
+
+            customFileContainer.addEventListener("click", function () {
+                fileInput.click();
+            });
+
+            const fileError = document.createElement("div");
+            fileError.className = "error-message";
+            fileError.innerText = "File is required.";
+
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    if (file.size > 2 * 1024 * 1024) {
+                        fileError.innerText = "File must be less than 2MB.";
+                        fileError.style.display = "block";
+                        fileInput.classList.add("error");
+                        customFileContainer.innerHTML = `<p>upload attachments</p>
+                  <svg width="34" height="32" viewBox="0 0 34 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.500122" width="34" height="31" rx="5" fill="#EEF5FA"/>
+                    <g clip-path="url(#clip0_871_1514)">
+                      <path d="M10.334 16.0002C10.334 12.8575 10.334 11.2861 11.3103 10.3098C12.2866 9.3335 13.858 9.3335 17.0007 9.3335C20.1433 9.3335 21.7147 9.3335 22.691 10.3098C23.6673 11.2861 23.6673 12.8575 23.6673 16.0002C23.6673 19.1428 23.6673 20.7142 22.691 21.6905C21.7147 22.6668 20.1433 22.6668 17.0007 22.6668C13.858 22.6668 12.2866 22.6668 11.3103 21.6905C10.334 20.7142 10.334 19.1428 10.334 16.0002Z" stroke="#559BD0" stroke-width="1.5"/>
+                    <path d="M17 19.3335V14.6669M17 14.6669L19 16.6669M17 14.6669L15 16.6669" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.6673 12.6669H14.334" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_871_1514">
+                        <rect width="16" height="16" fill="white" transform="translate(9 8.00012)"/>
+                      </clipPath>
+                    </defs>
+                  </svg>`;
+                        return;
+                    } else if (file.type !== "application/pdf" && file.type !== "image/jpeg") {
+                        fileError.innerText = "File must be a PDF or JPG.";
+                        fileError.style.display = "block";
+                        fileInput.classList.add("error");
+                        customFileContainer.innerHTML = `<p>upload attachments</p>
+                  <svg width="34" height="32" viewBox="0 0 34 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.500122" width="34" height="31" rx="5" fill="#EEF5FA"/>
+                    <g clip-path="url(#clip0_871_1514)">
+                      <path d="M10.334 16.0002C10.334 12.8575 10.334 11.2861 11.3103 10.3098C12.2866 9.3335 13.858 9.3335 17.0007 9.3335C20.1433 9.3335 21.7147 9.3335 22.691 10.3098C23.6673 11.2861 23.6673 12.8575 23.6673 16.0002C23.6673 19.1428 23.6673 20.7142 22.691 21.6905C21.7147 22.6668 20.1433 22.6668 17.0007 22.6668C13.858 22.6668 12.2866 22.6668 11.3103 21.6905C10.334 20.7142 10.334 19.1428 10.334 16.0002Z" stroke="#559BD0" stroke-width="1.5"/>
+                    <path d="M17 19.3335V14.6669M17 14.6669L19 16.6669M17 14.6669L15 16.6669" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.6673 12.6669H14.334" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_871_1514">
+                        <rect width="16" height="16" fill="white" transform="translate(9 8.00012)"/>
+                      </clipPath>
+                    </defs>
+                  </svg>`;
+                        return;
+                    } else {
+                        customFileContainer.innerHTML = `<p>${file.name}</p>
+                  <svg width="34" height="32" viewBox="0 0 34 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.500122" width="34" height="31" rx="5" fill="#EEF5FA"/>
+                    <g clip-path="url(#clip0_871_1514)">
+                      <path d="M10.334 16.0002C10.334 12.8575 10.334 11.2861 11.3103 10.3098C12.2866 9.3335 13.858 9.3335 17.0007 9.3335C20.1433 9.3335 21.7147 9.3335 22.691 10.3098C23.6673 11.2861 23.6673 12.8575 23.6673 16.0002C23.6673 19.1428 23.6673 20.7142 22.691 21.6905C21.7147 22.6668 20.1433 22.6668 17.0007 22.6668C13.858 22.6668 12.2866 22.6668 11.3103 21.6905C10.334 20.7142 10.334 19.1428 10.334 16.0002Z" stroke="#559BD0" stroke-width="1.5"/>
+                    <path d="M17 19.3335V14.6669M17 14.6669L19 16.6669M17 14.6669L15 16.6669" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.6673 12.6669H14.334" stroke="#559BD0" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_871_1514">
+                        <rect width="16" height="16" fill="white" transform="translate(9 8.00012)"/>
+                      </clipPath>
+                    </defs>
+                  </svg>`;
+                        fileInput.classList.remove("error");
+                        fileError.style.display = "none";
+                    }
+                    updateCompetitorsData();
+                }
+            });
+
+            fileDiv.appendChild(customFileContainer);
+            fileDiv.appendChild(fileInput);
+            fileDiv.appendChild(fileError);
+
+            // Create delete button (only if there's at least one competitor row already)
+            let deleteCell;
+            if (container.children.length > 0) {
+                deleteCell = document.createElement("div");
+                deleteCell.className = "delete-cell flex justify-start";
+                const deleteDiv = document.createElement("div");
+                deleteDiv.className = "deleteBtn cursor-pointer flex items-center";
+                deleteDiv.innerHTML = `
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_318_2240)">
+                  <path d="M16.995 3.56393H14.5009C14.3142 2.65595 13.8202 1.84011 13.1021 1.25391C12.384 0.667708 11.4857 0.346995 10.5588 0.345825L8.94971 0.345825C8.02274 0.346995 7.1245 0.667708 6.40641 1.25391C5.68831 1.84011 5.19427 2.65595 5.00754 3.56393H2.51351C2.30014 3.56393 2.0955 3.64869 1.94462 3.79957C1.79375 3.95045 1.70898 4.15508 1.70898 4.36845C1.70898 4.58183 1.79375 4.78646 1.94462 4.93734C2.0955 5.08822 2.30014 5.17298 2.51351 5.17298H3.31804V15.6318C3.31931 16.6983 3.74353 17.7207 4.49765 18.4748C5.25176 19.2289 6.27419 19.6532 7.34066 19.6544H12.1678C13.2343 19.6532 14.2567 19.2289 15.0108 18.4748C15.7649 17.7207 16.1892 16.6983 16.1904 15.6318V5.17298H16.995C17.2083 5.17298 17.413 5.08822 17.5639 4.93734C17.7147 4.78646 17.7995 4.58183 17.7995 4.36845C17.7995 4.15508 17.7147 3.95045 17.5639 3.79957C17.413 3.64869 17.2083 3.56393 16.995 3.56393ZM8.94971 1.95488H10.5588C11.0578 1.95549 11.5444 2.11045 11.9519 2.39853C12.3594 2.6866 12.6678 3.09368 12.8348 3.56393H6.67371C6.84072 3.09368 7.14911 2.6866 7.55659 2.39853C7.96407 2.11045 8.45069 1.95549 8.94971 1.95488ZM14.5814 15.6318C14.5814 16.2719 14.3271 16.8858 13.8745 17.3385C13.4218 17.7911 12.8079 18.0454 12.1678 18.0454H7.34066C6.70054 18.0454 6.08664 17.7911 5.63401 17.3385C5.18137 16.8858 4.92709 16.2719 4.92709 15.6318V5.17298H14.5814V15.6318Z" fill="#E4899C"/>
+                  <path d="M8.14632 14.8268C8.35969 14.8268 8.56433 14.7421 8.71521 14.5912C8.86608 14.4403 8.95084 14.2357 8.95084 14.0223V9.19515C8.95084 8.98178 8.86608 8.77714 8.71521 8.62626C8.56433 8.47539 8.35969 8.39062 8.14632 8.39062C7.93295 8.39062 7.72831 8.47539 7.57744 8.62626C7.42656 8.77714 7.3418 8.98178 7.3418 9.19515V14.0223C7.3418 14.2357 7.42656 14.4403 7.57744 14.5912C7.72831 14.7421 7.93295 14.8268 8.14632 14.8268Z" fill="#E4899C"/>
+                  <path d="M11.3641 14.8268C11.5775 14.8268 11.7821 14.7421 11.933 14.5912C12.0839 14.4403 12.1686 14.2357 12.1686 14.0223V9.19515C12.1686 8.98178 12.0839 8.77714 11.933 8.62626C11.7821 8.47539 11.5775 8.39062 11.3641 8.39062C11.1507 8.39062 10.9461 8.47539 10.7952 8.62626C10.6443 8.77714 10.5596 8.98178 10.5596 9.19515V14.0223C10.5596 14.2357 10.6443 14.4403 10.7952 14.5912C10.9461 14.7421 11.1507 14.8268 11.3641 14.8268Z" fill="#E4899C"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_318_2240">
+                    <rect width="19.3086" height="19.3086" fill="white" transform="translate(0.100586 0.345825)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+              <p class='text-[16px] text-[#BBB6B0] font-[500]'>Delete</p>
+                `;
+                // Attach delete event listener once
+                deleteDiv.addEventListener("click", function () {
+                    competitorDiv.remove();
+                    updateCompetitorsData();
+                });
+                deleteCell.appendChild(deleteDiv);
+            }
+            competitorDiv.appendChild(nameDiv);
+            competitorDiv.appendChild(fileDiv);
+            if (deleteCell) {
+                competitorDiv.appendChild(deleteCell);
+            }
+
+            container.appendChild(competitorDiv);
+            // Update the competitors data after adding a new row
+            updateCompetitorsData();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("competitorsContainer");
+            if (container.children.length === 0) {
+                addCompetitor();
+            }
+            document.querySelectorAll(".custom-number-input").forEach(wrapper => {
+                const input = wrapper.querySelector('input[type="number"]');
+                const incBtn = wrapper.querySelector(".number-increment");
+                const decBtn = wrapper.querySelector(".number-decrement");
+                incBtn.addEventListener("click", () => {
+                    input.value = parseInt(input.value || 0) + 1;
+                    input.dispatchEvent(new Event("change"));
+                });
+                decBtn.addEventListener("click", () => {
+                    input.value = parseInt(input.value || 0) - 1;
+                    input.dispatchEvent(new Event("change"));
+                });
+            });
+        });
+
+        document.getElementById("opportunityForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            document.getElementById("apiErrorOpportunity").classList.add("hidden");
+            let firstError = null;
+
+            // Validate main fields
+            filedsOppertunity.forEach((id) => {
+                const field = document.getElementById(id);
+                if (field && !validateField(field)) {
+                    field.classList.add("error");
+                    const errorDiv = document.getElementById(id + "Error");
+                    if (errorDiv) errorDiv.style.display = "block";
+                    if (!firstError) firstError = field;
+                }
+            });
+
+            // Explicitly validate competitor rows
+            const competitorEntries = document.querySelectorAll(".competitor-entry");
+            competitorEntries.forEach((entry, index) => {
+                const nameInput = entry.querySelector(".competitor-name");
+                const fileInput = entry.querySelector(".competitor-file");
+                if (!nameInput.value.trim()) {
+                    nameInput.classList.add("error");
+                    const errorEl = nameInput.nextElementSibling && nameInput.nextElementSibling.nextElementSibling;
+                    if (errorEl) errorEl.style.display = "block";
+                    if (!firstError) firstError = nameInput;
+                }
+                if ((!fileInput.files || fileInput.files.length === 0) &&
+                    (!clonedData.competitors[index].file.name)) {
+                    fileInput.classList.add("error");
+                    const errorEl = fileInput.nextElementSibling;
+                    if (errorEl) {
+                        errorEl.innerText = "File is required.";
+                        errorEl.style.display = "block";
+                    }
+                    if (!firstError) firstError = fileInput;
+                }
+            });
+
+            if (firstError) {
+                firstError.focus();
+                return;
+            }
+            const changedData = {};
+            for (let key in clonedData) {
+                if (JSON.stringify(clonedData[key]) !== JSON.stringify(originalData[key])) {
+                    changedData[key] = clonedData[key];
+                }
+            }
+            const formData = new FormData();
+            for (let key in changedData) {
+                if (changedData.hasOwnProperty(key)) {
+                    if (key === "opportunityFile") {
+                        const fileField = document.getElementById("opportunityFile");
+                        if (fileField && fileField.files && fileField.files.length > 0) {
+                            formData.append(key, fileField.files[0]);
+                        }
+                    } else if (key === "competitors") {
+                        changedData.competitors.forEach((comp, index) => {
+                            formData.append(`competitors[${index}][name]`, comp.name);
+                            const competitorEntries = document.querySelectorAll(".competitor-entry");
+                            if (competitorEntries[index]) {
+                                const fileInput = competitorEntries[index].querySelector(".competitor-file");
+                                if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                                    formData.append(`competitors[${index}][file]`, fileInput.files[0]);
+                                }
+                            }
+                        });
+                    } else {
+                        formData.append(key, changedData[key]);
+                    }
+                }
+            }
+            const submitButton = document.getElementById("submitButton");
+            submitButton.disabled = true;
+            submitButton.innerText = "save changes...";
+
+            sendOpportunityData(formData).then((response) => {
+                submitButton.disabled = false;
+                submitButton.innerText = "save changes";
+                if (response.error) {
+                    const apiErrorEl = document.getElementById("apiErrorOpportunity");
+                    apiErrorEl.classList.remove("hidden");
+                    apiErrorEl.innerText = response.error;
+                    apiErrorEl.scrollIntoView({ behavior: "smooth", block: "center" });
+                } else {
+                    showCustomAlert();
+                    setTimeout(() => {
+                        hiddenCustomAlert();
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
