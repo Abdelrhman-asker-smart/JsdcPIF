@@ -194,6 +194,10 @@
       #dropdownMenu {
         right: 0;
         top: 100%;
+      }@media screen and (max-height: 500px) {
+        .respdrop {
+          top: 20vw !important;
+        }
       }
       #dropdownToggle {
         background-color: rgba(255, 255, 255, 0.1);
@@ -231,7 +235,7 @@
         <!-- Toggler Button (Mobile) -->
         <button
           id="navbarToggler"
-          class="lg:hidden  ps-5 p-2 border border-gray-300 rounded-md focus:outline-none"
+          class="lg:hidden  ps-5 p-2 "
           aria-label="Toggle navigation"
         >
           <svg
